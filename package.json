@@ -1,25 +1,17 @@
 {
-    "name": "first-threejs-project",
-    "version": "1.0.0",
-    "description": "First Three.js Project\r Premier projet utilisant Three.js, dans le cadre du cours Three.js Journey de Bruno Simon.",
-    "homepage": "https://github.com/ArthurJenck/First-ThreeJs-Project#readme",
-    "bugs": {
-        "url": "https://github.com/ArthurJenck/First-ThreeJs-Project/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ArthurJenck/First-ThreeJs-Project.git"
-    },
-    "license": "ISC",
-    "author": "Arthur Jenck",
-    "type": "commonjs",
-    "main": "index.js",
-    "scripts": {
-        "dev": "vite",
-        "build": "vite build"
-    },
-    "dependencies": {
-        "three": "^0.182.0",
-        "vite": "^7.3.0"
-    }
+  "name": "threejs-journey-exercise",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^6.2.2",
+    "vite-plugin-restart": "^0.4.2"
+  },
+  "dependencies": {
+    "three": "^0.174.0"
+  }
 }
