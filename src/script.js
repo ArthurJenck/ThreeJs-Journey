@@ -31,9 +31,15 @@ renderer.setSize(sizes.width, sizes.height)
 
 // Animations
 const tick = () => {
+    // Time
+    const time = Date.now()
+    // console.log(time)
+
+    // Update objects
     mesh.rotation.y += 0.01
     mesh.rotation.x += 0.005
 
+    // Render
     renderer.render(scene, camera)
     window.requestAnimationFrame(tick)
 }
