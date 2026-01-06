@@ -1,7 +1,7 @@
-import * as THREE from 'three'
+import * as THREE from "three"
 
 // Canvas
-const canvas = document.querySelector('canvas.webgl')
+const canvas = document.querySelector("canvas.webgl")
 
 // Scene
 const scene = new THREE.Scene()
@@ -15,7 +15,7 @@ scene.add(mesh)
 // Sizes
 const sizes = {
     width: 800,
-    height: 600
+    height: 600,
 }
 
 // Camera
@@ -25,7 +25,17 @@ scene.add(camera)
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+    canvas: canvas,
 })
 renderer.setSize(sizes.width, sizes.height)
-renderer.render(scene, camera)
+
+// Animations
+const tick = () => {
+    mesh.rotation.y += 0.01
+    mesh.rotation.x += 0.005
+
+    renderer.render(scene, camera)
+    window.requestAnimationFrame(tick)
+}
+
+tick()
