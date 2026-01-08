@@ -1,6 +1,18 @@
 import * as THREE from "three"
 
 /**
+ * Cursor
+ */
+const cursor = {
+  x: 0,
+  y: 0,
+}
+window.addEventListener("mousemove", (e) => {
+  cursor.x = e.clientX / sizes.width - 0.5
+  cursor.y = e.clientY / sizes.height - 0.5
+})
+
+/**
  * Base
  */
 // Canvas
@@ -23,17 +35,17 @@ const mesh = new THREE.Mesh(
 scene.add(mesh)
 
 // Camera
-// const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
-const aspectRatio = sizes.width / sizes.height
-const camera = new THREE.OrthographicCamera(
-  -1 * aspectRatio,
-  1 * aspectRatio,
-  1,
-  -1
-)
-camera.position.x = 2
-camera.position.y = 2
-camera.position.z = -1
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+// const aspectRatio = sizes.width / sizes.height
+// const camera = new THREE.OrthographicCamera(
+//   -1 * aspectRatio,
+//   1 * aspectRatio,
+//   1,
+//   -1
+// )
+// camera.position.x = 2
+// camera.position.y = 2
+camera.position.z = 3
 camera.lookAt(mesh.position)
 scene.add(camera)
 
