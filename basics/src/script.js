@@ -47,6 +47,33 @@ window.addEventListener("resize", () => {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
+const handleFullScreen = () => {
+    const fullscreenElement =
+        document.fullscreenElement || document.webkitFullscreenElement
+
+    if (!fullscreenElement) {
+        if (canvas.requestFullscreen) {
+            canvas.requestFullscreen()
+        } else if (canvas.webkitRequestFullscreen) {
+            canvas.webkitRequestFullScreen()
+        }
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen()
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen()
+        }
+    }
+}
+
+window.addEventListener("keydown", (e) => {
+    if (e.key === "f") {
+        handleFullScreen()
+    }
+})
+
+window.addEventListener("dblclick", handleFullScreen)
+
 /**
  * Camera
  */
