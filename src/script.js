@@ -1,16 +1,23 @@
 import * as THREE from "three"
+import { OrbitControls } from "three/addons/controls/OrbitControls.js"
 
+/**
+ * Cursor
+ */
+const cursor = {
+    x: 0,
+    y: 0,
+}
+window.addEventListener("mousemove", (e) => {
+    cursor.x = e.clientX / sizes.width - 0.5
+    cursor.y = -(e.clientY / sizes.height - 0.5)
+})
+
+/**
+ * Base
+ */
 // Canvas
 const canvas = document.querySelector("canvas.webgl")
-
-// Scene
-const scene = new THREE.Scene()
-
-// Object
-const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-const mesh = new THREE.Mesh(geometry, material)
-scene.add(mesh)
 
 // Sizes
 const sizes = {
@@ -18,8 +25,27 @@ const sizes = {
     height: 600,
 }
 
+// Scene
+const scene = new THREE.Scene()
+
+// Object
+const mesh = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1, 5, 5, 5),
+    new THREE.MeshBasicMaterial({ color: 0xff0000 })
+)
+scene.add(mesh)
+
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+// const aspectRatio = sizes.width / sizes.height
+// const camera = new THREE.OrthographicCamera(
+//   -1 * aspectRatio,
+//   1 * aspectRatio,
+//   1,
+//   -1
+// )
+// camera.position.x = 2
+// camera.position.y = 2
 camera.position.z = 3
 scene.add(camera)
 
@@ -29,18 +55,33 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 
-// Animations
+// Animate
+const clock = new THREE.Clock()
+
+const controls = new OrbitControls(camera, renderer.domElement)
+controls.enableDamping = true
+// controls.target.x = 2
+console.log(controls)
+
 const tick = () => {
-    // Time
-    const time = Date.now()
-    // console.log(time)
+    const elapsedTime = clock.getElapsedTime()
 
     // Update objects
-    mesh.rotation.y += 0.01
-    mesh.rotation.x += 0.005
+    mesh.rotation.y = elapsedTime
+
+    // Update camera
+    // camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3
+    // camera.position.y = cursor.y * 5
+    // camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3
+    // camera.lookAt(mesh.position)
+
+    // Update controls
+    controls.update()
 
     // Render
     renderer.render(scene, camera)
+
+    // Call tick again on the next frame
     window.requestAnimationFrame(tick)
 }
 
