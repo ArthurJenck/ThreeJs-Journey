@@ -15,7 +15,7 @@ const geometry = new THREE.BufferGeometry()
 
 const count = 50
 const positionsArray = new Float32Array(count * 3 * 3)
-for (let i = 0; i < count; i++) {
+for (let i = 0; i < count * 3 * 3; i++) {
     positionsArray[i] = (Math.random() - 0.5) * 4
 }
 
