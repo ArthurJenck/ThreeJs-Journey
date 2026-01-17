@@ -31,12 +31,15 @@ const material = new THREE.MeshBasicMaterial({
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
-gui.add(mesh.position, "y", -3, 3, 0.01).name("Elevation")
-gui.add(mesh.position, "x").min(-3).max(3).step(0.01).name("Slide")
-gui.add(mesh.position, "z", -3, 3, 0.01).name("Depth")
-gui.add(mesh, "visible").name("Show / Hide")
-gui.add(material, "wireframe").name("Wireframe")
-gui
+const cubeTweaks = gui.addFolder("Cube")
+// cubeTweaks.close()
+
+cubeTweaks.add(mesh.position, "y", -3, 3, 0.01).name("Elevation")
+cubeTweaks.add(mesh.position, "x").min(-3).max(3).step(0.01).name("Slide")
+cubeTweaks.add(mesh.position, "z", -3, 3, 0.01).name("Depth")
+cubeTweaks.add(mesh, "visible").name("Show / Hide")
+cubeTweaks.add(material, "wireframe").name("Wireframe")
+cubeTweaks
   .addColor(debugObject, "color")
   .name("Color")
   .onChange((newColor) => {
@@ -47,11 +50,11 @@ debugObject.spin = () => {
   gsap.to(mesh.rotation, { y: mesh.rotation.y + Math.PI * 2 })
 }
 
-gui.add(debugObject, "spin")
+cubeTweaks.add(debugObject, "spin")
 
 debugObject.subdivision = 2
 
-gui
+cubeTweaks
   .add(debugObject, "subdivision")
   .min(1)
   .max(20)
