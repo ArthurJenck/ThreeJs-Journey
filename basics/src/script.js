@@ -7,6 +7,7 @@ import GUI from "lil-gui"
  * Debug
  */
 const gui = new GUI()
+const debugObject = {}
 
 /**
  * Base
@@ -20,14 +21,33 @@ const scene = new THREE.Scene()
 /**
  * Object
  */
+debugObject.color = "#a778d8"
+
 const geometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2)
-const material = new THREE.MeshBasicMaterial({ color: "#ff0000" })
+const material = new THREE.MeshBasicMaterial({
+  color: debugObject.color,
+  wireframe: true,
+})
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
-gui.add(mesh.position, "y")
-gui.add(mesh.position, "x")
-gui.add(mesh.position, "z")
+gui.add(mesh.position, "y", -3, 3, 0.01).name("Elevation")
+gui.add(mesh.position, "x").min(-3).max(3).step(0.01).name("Slide")
+gui.add(mesh.position, "z", -3, 3, 0.01).name("Depth")
+gui.add(mesh, "visible").name("Show / Hide")
+gui.add(material, "wireframe").name("Wireframe")
+gui
+  .addColor(debugObject, "color")
+  .name("Color")
+  .onChange((newColor) => {
+    material.color.set(debugObject.color)
+  })
+
+debugObject.spin = () => {
+  gsap.to(mesh.rotation, { y: mesh.rotation.y + Math.PI * 2 })
+}
+
+gui.add(debugObject, "spin")
 
 /**
  * Sizes
