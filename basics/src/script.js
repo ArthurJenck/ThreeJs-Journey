@@ -6,7 +6,21 @@ import GUI from "lil-gui"
 /**
  * Debug
  */
-const gui = new GUI()
+const gui = new GUI({
+  width: 250,
+  title: "Debug UI",
+  //   closeFolders: false,
+})
+
+// gui.close()
+// gui.hide()
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "h") {
+    gui.show(gui._hidden)
+  }
+})
+
 const debugObject = {}
 
 /**
