@@ -9,6 +9,39 @@ const gui = new GUI({
     title: "Debug UI",
 })
 
+/**
+ * Textures
+ */
+const loadingManager = new THREE.LoadingManager()
+
+loadingManager.onStart = () => {
+    console.log("onStart")
+}
+
+loadingManager.onProgress = () => {
+    console.log("onProgress")
+}
+
+loadingManager.onLoad = () => {
+    console.log("onLoad")
+}
+
+loadingManager.onError = (err) => {
+    console.log("onError", err)
+}
+
+const textureLoader = new THREE.TextureLoader(loadingManager)
+const colorTexture = textureLoader.load("/textures/door/color.jpg")
+colorTexture.colorSpace = THREE.SRGBColorSpace
+const alphaTexture = textureLoader.load("/textures/door/alpha.jpg")
+const heightTexture = textureLoader.load("/textures/door/height.jpg")
+const normalTexture = textureLoader.load("/textures/door/normal.jpg")
+const ambientOcclusionTexture = textureLoader.load(
+    "/textures/door/ambientOcclusion.jpg",
+)
+const metalnessTexture = textureLoader.load("/textures/door/metalness.jpg")
+const roughnessTexture = textureLoader.load("/textures/door/roughness.jpg")
+
 gui.close()
 window.addEventListener("keydown", (e) => {
     if (e.key === "h") {
@@ -31,10 +64,8 @@ const scene = new THREE.Scene()
 /**
  * Object
  */
-debugObject.color = "#ff0000"
-
 const geometry = new THREE.BoxGeometry(1, 1, 1)
-const material = new THREE.MeshBasicMaterial({ color: debugObject.color })
+const material = new THREE.MeshBasicMaterial({ map: colorTexture })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
 
@@ -45,12 +76,6 @@ cubeTweaks.add(mesh.position, "x").min(-3).max(3).step(0.01).name("Slide")
 cubeTweaks.add(mesh.position, "z", -3, 3, 0.01).name("Depth")
 cubeTweaks.add(mesh, "visible").name("Show / Hide")
 cubeTweaks.add(material, "wireframe").name("Wireframe")
-cubeTweaks
-    .addColor(debugObject, "color")
-    .name("Color")
-    .onChange((newColor) => {
-        material.color.set(debugObject.color)
-    })
 
 debugObject.spin = () => {
     gsap.to(mesh.rotation, { y: mesh.rotation.y + Math.PI * 2 })
