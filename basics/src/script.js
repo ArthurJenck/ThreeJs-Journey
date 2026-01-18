@@ -1,6 +1,7 @@
 import * as THREE from "three"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import GUI from "lil-gui"
+import gsap from "gsap"
 
 /**
  * Debug
@@ -14,21 +15,21 @@ const gui = new GUI({
  */
 const loadingManager = new THREE.LoadingManager()
 
-loadingManager.onStart = () => {
-    console.log("onStart")
-}
+// loadingManager.onStart = () => {
+//     console.log("onStart")
+// }
 
-loadingManager.onProgress = () => {
-    console.log("onProgress")
-}
+// loadingManager.onProgress = () => {
+//     console.log("onProgress")
+// }
 
-loadingManager.onLoad = () => {
-    console.log("onLoad")
-}
+// loadingManager.onLoad = () => {
+//     console.log("onLoad")
+// }
 
-loadingManager.onError = (err) => {
-    console.log("onError", err)
-}
+// loadingManager.onError = (err) => {
+//     console.log("onError", err)
+// }
 
 const textureLoader = new THREE.TextureLoader(loadingManager)
 const colorTexture = textureLoader.load("/textures/door/color.jpg")
@@ -41,6 +42,18 @@ const ambientOcclusionTexture = textureLoader.load(
 )
 const metalnessTexture = textureLoader.load("/textures/door/metalness.jpg")
 const roughnessTexture = textureLoader.load("/textures/door/roughness.jpg")
+
+// colorTexture.repeat.x = 3
+// colorTexture.repeat.y = 3
+// colorTexture.wrapS = THREE.MirroredRepeatWrapping
+// colorTexture.wrapT = THREE.RepeatWrapping
+
+// colorTexture.offset.x = 0.5
+// colorTexture.offset.y = 0.5
+
+colorTexture.rotation = Math.PI / 4
+colorTexture.center.x = 0.5
+colorTexture.center.y = 0.5
 
 gui.close()
 window.addEventListener("keydown", (e) => {
