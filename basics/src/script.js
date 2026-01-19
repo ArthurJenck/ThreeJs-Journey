@@ -18,8 +18,7 @@ const sizes = {
     height: window.innerHeight
 }
 
-window.addEventListener('resize', () =>
-{
+window.addEventListener('resize', () => {
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
@@ -34,22 +33,45 @@ window.addEventListener('resize', () =>
 })
 
 /**
- * Geometry
+ * Textures
  */
-const material = new THREE.MeshBasicMaterial({color: '#ff0000', wireframe: true})
-const sphereGeometry = new THREE.SphereGeometry(1, 32, 32)
-const sphereMesh = new THREE.Mesh(sphereGeometry, material)
 
-const planeGeometry = new THREE.PlaneGeometry(1, 1)
-const planeMesh = new THREE.Mesh(planeGeometry, material)
+const textureLoader = new THREE.TextureLoader()
 
-const torusGeometry = new THREE.TorusGeometry(0.8, 0.3, 12, 32)
-const torusMesh = new THREE.Mesh(torusGeometry, material)
+const doorColorTexture = textureLoader.load('/textures/door/color.jpg')
+const doorAlphaTexture = textureLoader.load('/textures/door/alpha.jpg')
+const doorAmbientOcclusionTexture = textureLoader.load('/textures/door/ambientOcclusion.jpg')
+const doorHeightTexture = textureLoader.load('/textures/door/height.jpg')
+const doorNormalTexture = textureLoader.load('/textures/door/normal.jpg')
+const doorMetalnessTexture = textureLoader.load('/textures/door/metalness.jpg')
+const doorRoughnessTexture = textureLoader.load('/textures/door/roughness.jpg')
 
-sphereMesh.position.x = -2
-torusMesh.position.x = 2
+const matcapTexture = textureLoader.load('/textures/matcaps/1.png')
 
-scene.add(sphereMesh, planeMesh, torusMesh)
+const gradientTexture = textureLoader.load('/textures/gradients/3.jpg')
+
+doorColorTexture.colorSpace = THREE.SRGBColorSpace
+matcapTexture.colorSpace = THREE.SRGBColorSpace
+
+/**
+ * Objects
+ */
+// MeshBasicMaterial
+// const material = new THREE.MeshBasicMaterial({ map: doorColorTexture })
+
+const material = new THREE.MeshBasicMaterial()
+material.map = doorColorTexture
+
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material)
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material)
+
+const torus = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.2, 16, 32), material)
+
+sphere.position.x = -1.5
+torus.position.x = 1.5
+
+scene.add(sphere, plane, torus)
 
 /**
  * Camera
@@ -79,9 +101,17 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  */
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
+const tick = () => {
     const elapsedTime = clock.getElapsedTime()
+
+    sphere.rotation.x = elapsedTime * -0.15
+    sphere.rotation.y = elapsedTime * 0.1
+
+    plane.rotation.x = elapsedTime * -0.15
+    plane.rotation.y = elapsedTime * 0.1
+
+    torus.rotation.x = elapsedTime * -0.15
+    torus.rotation.y = elapsedTime * 0.1
 
     // Update controls
     controls.update()
