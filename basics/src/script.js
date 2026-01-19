@@ -85,6 +85,7 @@ const objectsFolder = gui.addFolder('Objects & Material')
 const material = new THREE.MeshStandardMaterial()
 material.metalness = 1
 material.roughness = 0
+material.side = THREE.DoubleSide
 objectsFolder.add(material, 'metalness').min(0).max(1).step(0.0001).name("Metalness")
 objectsFolder.add(material, 'roughness').min(0).max(1).step(0.0001).name("Roughness")
 
