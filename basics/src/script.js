@@ -34,6 +34,24 @@ window.addEventListener('resize', () =>
 })
 
 /**
+ * Geometry
+ */
+const material = new THREE.MeshBasicMaterial({color: '#ff0000', wireframe: true})
+const sphereGeometry = new THREE.SphereGeometry(1, 32, 32)
+const sphereMesh = new THREE.Mesh(sphereGeometry, material)
+
+const planeGeometry = new THREE.PlaneGeometry(1, 1)
+const planeMesh = new THREE.Mesh(planeGeometry, material)
+
+const torusGeometry = new THREE.TorusGeometry(0.8, 0.3, 12, 32)
+const torusMesh = new THREE.Mesh(torusGeometry, material)
+
+sphereMesh.position.x = -2
+torusMesh.position.x = 2
+
+scene.add(sphereMesh, planeMesh, torusMesh)
+
+/**
  * Camera
  */
 // Base camera
