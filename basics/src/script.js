@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'
 
 /**
  * Debug UI
@@ -82,8 +83,8 @@ const objectsFolder = gui.addFolder('Objects & Material')
 
 // MeshStandardMaterial
 const material = new THREE.MeshStandardMaterial()
-material.metalness = 0.7
-material.roughness = 0.2
+material.metalness = 1
+material.roughness = 0
 objectsFolder.add(material, 'metalness').min(0).max(1).step(0.0001).name("Metalness")
 objectsFolder.add(material, 'roughness').min(0).max(1).step(0.0001).name("Roughness")
 
@@ -101,14 +102,25 @@ scene.add(sphere, plane, torus)
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight('white', 1)
-scene.add(ambientLight)
+// const ambientLight = new THREE.AmbientLight('white', 1)
+// scene.add(ambientLight)
 
-const pointLight = new THREE.PointLight('white', 30)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
-scene.add(pointLight)
+// const pointLight = new THREE.PointLight('white', 30)
+// pointLight.position.x = 2
+// pointLight.position.y = 3
+// pointLight.position.z = 4
+// scene.add(pointLight)
+
+/**
+ * Environment Map
+ */
+const rgbeLoader = new RGBELoader()
+rgbeLoader.load('/textures/environmentMap/2k.hdr', (environmentMap) => {
+    environmentMap.mapping = THREE.EquirectangularReflectionMapping
+
+    scene.background = environmentMap
+    scene.environment = environmentMap
+})
 
 /**
  * Sizes
