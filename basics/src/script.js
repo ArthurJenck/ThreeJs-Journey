@@ -83,17 +83,33 @@ const objectsFolder = gui.addFolder('Objects & Material')
 
 // MeshStandardMaterial
 const material = new THREE.MeshStandardMaterial()
+// material.metalness = 1
+// material.roughness = 0
 material.metalness = 1
-material.roughness = 0
-material.side = THREE.DoubleSide
+material.roughness = 1
 objectsFolder.add(material, 'metalness').min(0).max(1).step(0.0001).name("Metalness")
 objectsFolder.add(material, 'roughness').min(0).max(1).step(0.0001).name("Roughness")
 
-const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material)
+material.side = THREE.DoubleSide
+material.map = doorColorTexture
+material.aoMap = doorAmbientOcclusionTexture
+material.aoMapIntensity = 1
+objectsFolder.add(material, 'aoMapIntensity').min(0).max(1).step(0.001).name('AoMapIntensity')
+material.displacementMap = doorHeightTexture
+material.displacementScale = 0.1
+objectsFolder.add(material, 'displacementScale').min(0).max(1).step(0.001).name('DisplacementScale')
+material.metalnessMap = doorMetalnessTexture
+material.roughnessMap = doorRoughnessTexture
+material.normalMap = doorNormalTexture
+material.normalScale.set(0.5, 0.5)
+material.transparent = true
+material.alphaMap = doorAlphaTexture
 
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), material)
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 64, 64), material)
 
-const torus = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.2, 16, 32), material)
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 100, 100), material)
+
+const torus = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.2, 64, 128), material)
 
 sphere.position.x = -1.5
 torus.position.x = 1.5
