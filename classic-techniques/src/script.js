@@ -59,6 +59,21 @@ hemisphereLightFolder
 	.max(Math.PI)
 	.step(0.001)
 
+// Point Light
+const pointLight = new THREE.PointLight('yellow', 1.5)
+pointLight.position.set(1, -0.5, 1)
+
+scene.add(pointLight)
+
+const pointLightFolder = gui.addFolder('Point Light')
+pointLightFolder.addColor(pointLight, 'color')
+pointLightFolder.add(pointLight, 'intensity').min(0).max(Math.PI).step(0.001)
+pointLightFolder.add(pointLight.position, 'x').min(-4).max(4).step(0.001)
+pointLightFolder.add(pointLight.position, 'y').min(-3).max(3).step(0.001)
+pointLightFolder.add(pointLight.position, 'z').min(-4).max(4).step(0.001)
+pointLightFolder.add(pointLight, 'distance').min(0).max(10).step(0.001)
+pointLightFolder.add(pointLight, 'decay').min(0).max(10).step(0.001)
+
 /**
  * Objects
  */
