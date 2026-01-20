@@ -20,26 +20,41 @@ const scene = new THREE.Scene()
 // Ambient Light
 const ambientLight = new THREE.AmbientLight('white', 1)
 
-scene.add(ambientLight)
+// scene.add(ambientLight)
 
-const ambientLightFolder = gui.addFolder('Ambient Light')
-ambientLightFolder.addColor(ambientLight, 'color')
-ambientLightFolder
-	.add(ambientLight, 'intensity')
-	.min(0)
-	.max(Math.PI)
-	.step(0.001)
+// const ambientLightFolder = gui.addFolder('Ambient Light')
+// ambientLightFolder.addColor(ambientLight, 'color')
+// ambientLightFolder
+// 	.add(ambientLight, 'intensity')
+// 	.min(0)
+// 	.max(Math.PI)
+// 	.step(0.001)
 
 // Directional Light
 const directionalLight = new THREE.DirectionalLight('turquoise', 1)
 directionalLight.position.set(1, 0.25, 0)
 
-scene.add(directionalLight)
+// scene.add(directionalLight)
 
-const directionalLightFolder = gui.addFolder('Directional Light')
-directionalLightFolder.addColor(directionalLight, 'color')
-directionalLightFolder
-	.add(directionalLight, 'intensity')
+// const directionalLightFolder = gui.addFolder('Directional Light')
+// directionalLightFolder.addColor(directionalLight, 'color')
+// directionalLightFolder
+// 	.add(directionalLight, 'intensity')
+// 	.min(0)
+// 	.max(Math.PI)
+// 	.step(0.001)
+
+// Hemisphere Light
+
+const hemisphereLight = new THREE.HemisphereLight('red', 'blue', 1)
+
+scene.add(hemisphereLight)
+
+const hemisphereLightFolder = gui.addFolder('Hemisphere Light')
+hemisphereLightFolder.addColor(hemisphereLight, 'color')
+hemisphereLightFolder.addColor(hemisphereLight, 'groundColor')
+hemisphereLightFolder
+	.add(hemisphereLight, 'intensity')
 	.min(0)
 	.max(Math.PI)
 	.step(0.001)
