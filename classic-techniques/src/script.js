@@ -77,7 +77,8 @@ pointLight.position.set(1, -0.5, 1)
 // Rect Area Light
 const rectAreaLight = new THREE.RectAreaLight('blue', Math.PI, 2, 1)
 rectAreaLight.position.set(-1.5, 0, 1.5)
-rectAreaLight.lookAt(new THREE.Vector3())
+const lookAtTarget = new THREE.Vector3()
+rectAreaLight.lookAt(lookAtTarget)
 
 scene.add(rectAreaLight)
 
@@ -96,7 +97,7 @@ rectAreaLightFolder
 	.max(4)
 	.step(0.001)
 	.onChange(() => {
-		rectAreaLight.lookAt(new THREE.Vector3())
+		rectAreaLight.lookAt(lookAtTarget)
 	})
 rectAreaLightFolder
 	.add(rectAreaLight.position, 'y')
@@ -104,7 +105,7 @@ rectAreaLightFolder
 	.max(3)
 	.step(0.001)
 	.onChange(() => {
-		rectAreaLight.lookAt(new THREE.Vector3())
+		rectAreaLight.lookAt(lookAtTarget)
 	})
 rectAreaLightFolder
 	.add(rectAreaLight.position, 'z')
@@ -112,7 +113,7 @@ rectAreaLightFolder
 	.max(4)
 	.step(0.001)
 	.onChange(() => {
-		rectAreaLight.lookAt(new THREE.Vector3())
+		rectAreaLight.lookAt(lookAtTarget)
 	})
 
 /**
