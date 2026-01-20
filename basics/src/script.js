@@ -20,12 +20,14 @@ const scene = new THREE.Scene()
  * Axes helper
  */
 const axesHelper = new THREE.AxesHelper()
-scene.add(axesHelper)
+// scene.add(axesHelper)
 
 /**
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
+const matcapTexture = textureLoader.load('/textures/matcaps/8.png')
+matcapTexture.colorSpace = THREE.SRGBColorSpace
 
 /**
  * Fonts
@@ -53,15 +55,15 @@ fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
 		bevelOffset: 0,
 		bevelSegments: 4,
 	})
-	textGeometry.computeBoundingBox()
-	textGeometry.translate(
-		-(textGeometry.boundingBox.max.x - debugObject.bevelSize) / 2,
-		-(textGeometry.boundingBox.max.y - debugObject.bevelSize) / 2,
-		-(textGeometry.boundingBox.max.z - debugObject.bevelThickness) * 0.5
-	)
-	console.log(textGeometry.boundingBox)
+	// textGeometry.computeBoundingBox()
+	// textGeometry.translate(
+	// 	-(textGeometry.boundingBox.max.x - debugObject.bevelSize) / 2,
+	// 	-(textGeometry.boundingBox.max.y - debugObject.bevelSize) / 2,
+	// 	-(textGeometry.boundingBox.max.z - debugObject.bevelThickness) * 0.5
+	// )
+	textGeometry.center()
 
-	const textMaterial = new THREE.MeshBasicMaterial({ wireframe: true })
+	const textMaterial = new THREE.MeshMatcapMaterial({ matcap: matcapTexture })
 	const textMesh = new THREE.Mesh(textGeometry, textMaterial)
 	scene.add(textMesh)
 })
