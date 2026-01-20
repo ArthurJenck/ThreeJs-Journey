@@ -116,6 +116,34 @@ rectAreaLightFolder
 		rectAreaLight.lookAt(lookAtTarget)
 	})
 
+// Spot Light
+const spotLight = new THREE.SpotLight(
+	'white',
+	Math.PI,
+	10,
+	Math.PI * 0.1,
+	0.25,
+	1
+)
+spotLight.position.set(0, 2, 3)
+
+scene.add(spotLight)
+
+spotLight.target.position.x = 1.5
+scene.add(spotLight.target)
+
+const spotLightFolder = gui.addFolder('Spot Light')
+spotLightFolder.addColor(spotLight, 'color')
+spotLightFolder.add(spotLight, 'intensity').min(0).max(Math.PI).step(0.001)
+spotLightFolder.add(spotLight, 'distance').min(0).max(15).step(0.001)
+spotLightFolder.add(spotLight, 'angle').min(0).max(Math.PI).step(0.001)
+spotLightFolder.add(spotLight, 'penumbra').min(0).max(Math.PI).step(0.001)
+spotLightFolder.add(spotLight, 'decay').min(0).max(Math.PI).step(0.001)
+
+spotLightFolder.add(spotLight.target.position, 'x').min(-4).max(4).step(0.001)
+spotLightFolder.add(spotLight.target.position, 'y').min(-3).max(3).step(0.001)
+spotLightFolder.add(spotLight.target.position, 'z').min(-4).max(4).step(0.001)
+
 /**
  * Objects
  */
