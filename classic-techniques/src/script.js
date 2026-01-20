@@ -48,31 +48,72 @@ directionalLight.position.set(1, 0.25, 0)
 
 const hemisphereLight = new THREE.HemisphereLight('red', 'blue', 1)
 
-scene.add(hemisphereLight)
+// scene.add(hemisphereLight)
 
-const hemisphereLightFolder = gui.addFolder('Hemisphere Light')
-hemisphereLightFolder.addColor(hemisphereLight, 'color')
-hemisphereLightFolder.addColor(hemisphereLight, 'groundColor')
-hemisphereLightFolder
-	.add(hemisphereLight, 'intensity')
-	.min(0)
-	.max(Math.PI)
-	.step(0.001)
+// const hemisphereLightFolder = gui.addFolder('Hemisphere Light')
+// hemisphereLightFolder.addColor(hemisphereLight, 'color')
+// hemisphereLightFolder.addColor(hemisphereLight, 'groundColor')
+// hemisphereLightFolder
+// 	.add(hemisphereLight, 'intensity')
+// 	.min(0)
+// 	.max(Math.PI)
+// 	.step(0.001)
 
 // Point Light
 const pointLight = new THREE.PointLight('yellow', 1.5)
 pointLight.position.set(1, -0.5, 1)
 
-scene.add(pointLight)
+// scene.add(pointLight)
 
-const pointLightFolder = gui.addFolder('Point Light')
-pointLightFolder.addColor(pointLight, 'color')
-pointLightFolder.add(pointLight, 'intensity').min(0).max(Math.PI).step(0.001)
-pointLightFolder.add(pointLight.position, 'x').min(-4).max(4).step(0.001)
-pointLightFolder.add(pointLight.position, 'y').min(-3).max(3).step(0.001)
-pointLightFolder.add(pointLight.position, 'z').min(-4).max(4).step(0.001)
-pointLightFolder.add(pointLight, 'distance').min(0).max(10).step(0.001)
-pointLightFolder.add(pointLight, 'decay').min(0).max(10).step(0.001)
+// const pointLightFolder = gui.addFolder('Point Light')
+// pointLightFolder.addColor(pointLight, 'color')
+// pointLightFolder.add(pointLight, 'intensity').min(0).max(Math.PI).step(0.001)
+// pointLightFolder.add(pointLight.position, 'x').min(-4).max(4).step(0.001)
+// pointLightFolder.add(pointLight.position, 'y').min(-3).max(3).step(0.001)
+// pointLightFolder.add(pointLight.position, 'z').min(-4).max(4).step(0.001)
+// pointLightFolder.add(pointLight, 'distance').min(0).max(10).step(0.001)
+// pointLightFolder.add(pointLight, 'decay').min(0).max(10).step(0.001)
+
+// Rect Area Light
+const rectAreaLight = new THREE.RectAreaLight('blue', Math.PI, 2, 1)
+rectAreaLight.position.set(-1.5, 0, 1.5)
+rectAreaLight.lookAt(new THREE.Vector3())
+
+scene.add(rectAreaLight)
+
+const rectAreaLightFolder = gui.addFolder('Rect Area Light')
+rectAreaLightFolder.addColor(rectAreaLight, 'color')
+rectAreaLightFolder
+	.add(rectAreaLight, 'intensity')
+	.min(0)
+	.max(Math.PI)
+	.step(0.001)
+rectAreaLightFolder.add(rectAreaLight, 'width').min(0).max(5).step(0.001)
+rectAreaLightFolder.add(rectAreaLight, 'height').min(0).max(5).step(0.001)
+rectAreaLightFolder
+	.add(rectAreaLight.position, 'x')
+	.min(-4)
+	.max(4)
+	.step(0.001)
+	.onChange(() => {
+		rectAreaLight.lookAt(new THREE.Vector3())
+	})
+rectAreaLightFolder
+	.add(rectAreaLight.position, 'y')
+	.min(-3)
+	.max(3)
+	.step(0.001)
+	.onChange(() => {
+		rectAreaLight.lookAt(new THREE.Vector3())
+	})
+rectAreaLightFolder
+	.add(rectAreaLight.position, 'z')
+	.min(-4)
+	.max(4)
+	.step(0.001)
+	.onChange(() => {
+		rectAreaLight.lookAt(new THREE.Vector3())
+	})
 
 /**
  * Objects
