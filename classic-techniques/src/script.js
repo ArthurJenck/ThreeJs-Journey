@@ -17,13 +17,29 @@ const scene = new THREE.Scene()
 /**
  * Lights
  */
-const ambientLight = new THREE.AmbientLight('white', Math.PI)
+// Ambient Light
+const ambientLight = new THREE.AmbientLight('white', 1)
+
 scene.add(ambientLight)
 
 const ambientLightFolder = gui.addFolder('Ambient Light')
 ambientLightFolder.addColor(ambientLight, 'color')
 ambientLightFolder
 	.add(ambientLight, 'intensity')
+	.min(0)
+	.max(Math.PI)
+	.step(0.001)
+
+// Directional Light
+const directionalLight = new THREE.DirectionalLight('turquoise', 1)
+directionalLight.position.set(1, 0.25, 0)
+
+scene.add(directionalLight)
+
+const directionalLightFolder = gui.addFolder('Directional Light')
+directionalLightFolder.addColor(directionalLight, 'color')
+directionalLightFolder
+	.add(directionalLight, 'intensity')
 	.min(0)
 	.max(Math.PI)
 	.step(0.001)
