@@ -1,6 +1,8 @@
+import GUI from 'lil-gui'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import GUI from 'lil-gui'
+import { FontLoader } from 'three/addons/loaders/FontLoader.js'
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js'
 
 /**
  * Base
@@ -15,48 +17,87 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 /**
+ * Axes helper
+ */
+const axesHelper = new THREE.AxesHelper()
+scene.add(axesHelper)
+
+/**
  * Textures
  */
 const textureLoader = new THREE.TextureLoader()
 
 /**
- * Object
+ * Fonts
  */
-const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial()
-)
+const fontLoader = new FontLoader()
+fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+	const debugObject = {}
+	debugObject.textSize = 0.5
+	gui.add(debugObject, 'textSize')
+	debugObject.textDepth = 0.2
+	gui.add(debugObject, 'textDepth')
+	debugObject.bevelSize = 0.02
+	gui.add(debugObject, 'bevelSize')
+	debugObject.bevelThickness = 0.03
+	gui.add(debugObject, 'bevelThickness')
 
-scene.add(cube)
+	const textGeometry = new TextGeometry('Arthur Jenck', {
+		font,
+		size: debugObject.textSize,
+		depth: debugObject.textDepth,
+		curveSegments: 5,
+		bevelEnabled: true,
+		bevelSize: debugObject.bevelSize,
+		bevelThickness: debugObject.bevelThickness,
+		bevelOffset: 0,
+		bevelSegments: 4,
+	})
+	textGeometry.computeBoundingBox()
+	textGeometry.translate(
+		-(textGeometry.boundingBox.max.x - debugObject.bevelSize) / 2,
+		-(textGeometry.boundingBox.max.y - debugObject.bevelSize) / 2,
+		-(textGeometry.boundingBox.max.z - debugObject.bevelThickness) * 0.5
+	)
+	console.log(textGeometry.boundingBox)
+
+	const textMaterial = new THREE.MeshBasicMaterial({ wireframe: true })
+	const textMesh = new THREE.Mesh(textGeometry, textMaterial)
+	scene.add(textMesh)
+})
 
 /**
  * Sizes
  */
 const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
+	width: window.innerWidth,
+	height: window.innerHeight,
 }
 
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
+window.addEventListener('resize', () => {
+	// Update sizes
+	sizes.width = window.innerWidth
+	sizes.height = window.innerHeight
 
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
+	// Update camera
+	camera.aspect = sizes.width / sizes.height
+	camera.updateProjectionMatrix()
 
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+	// Update renderer
+	renderer.setSize(sizes.width, sizes.height)
+	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 /**
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(
+	75,
+	sizes.width / sizes.height,
+	0.1,
+	100
+)
 camera.position.x = 1
 camera.position.y = 1
 camera.position.z = 2
@@ -70,7 +111,7 @@ controls.enableDamping = true
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+	canvas: canvas,
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -80,18 +121,17 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  */
 const clock = new THREE.Clock()
 
-const tick = () =>
-{
-    const elapsedTime = clock.getElapsedTime()
+const tick = () => {
+	const elapsedTime = clock.getElapsedTime()
 
-    // Update controls
-    controls.update()
+	// Update controls
+	controls.update()
 
-    // Render
-    renderer.render(scene, camera)
+	// Render
+	renderer.render(scene, camera)
 
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+	// Call tick again on the next frame
+	window.requestAnimationFrame(tick)
 }
 
 tick()
