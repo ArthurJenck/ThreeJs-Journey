@@ -34,32 +34,23 @@ matcapTexture.colorSpace = THREE.SRGBColorSpace
  */
 const fontLoader = new FontLoader()
 fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
-	const debugObject = {}
-	debugObject.textSize = 0.5
-	gui.add(debugObject, 'textSize')
-	debugObject.textDepth = 0.2
-	gui.add(debugObject, 'textDepth')
-	debugObject.bevelSize = 0.02
-	gui.add(debugObject, 'bevelSize')
-	debugObject.bevelThickness = 0.03
-	gui.add(debugObject, 'bevelThickness')
-
 	const textGeometry = new TextGeometry('Arthur Jenck', {
 		font,
-		size: debugObject.textSize,
-		depth: debugObject.textDepth,
+		size: 0.5,
+		depth: 0.2,
 		curveSegments: 6,
 		bevelEnabled: true,
-		bevelSize: debugObject.bevelSize,
-		bevelThickness: debugObject.bevelThickness,
+		bevelSize: 0.02,
+		bevelThickness: 0.03,
 		bevelOffset: 0,
 		bevelSegments: 4,
 	})
+
 	// textGeometry.computeBoundingBox()
 	// textGeometry.translate(
-	// 	-(textGeometry.boundingBox.max.x - debugObject.bevelSize) / 2,
-	// 	-(textGeometry.boundingBox.max.y - debugObject.bevelSize) / 2,
-	// 	-(textGeometry.boundingBox.max.z - debugObject.bevelThickness) * 0.5
+	// 	-(textGeometry.boundingBox.max.x - 0.02) / 2,
+	// 	-(textGeometry.boundingBox.max.y - 0.02) / 2,
+	// 	-(textGeometry.boundingBox.max.z - 0.03) * 0.5
 	// )
 	textGeometry.center()
 
