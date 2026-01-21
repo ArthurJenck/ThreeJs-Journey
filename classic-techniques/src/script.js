@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
-import { RectAreaLightHelper } from 'three/addons/helpers/RectAreaLightHelper.js'
 
 /**
  * Base
@@ -18,214 +17,73 @@ const scene = new THREE.Scene()
 /**
  * Lights
  */
-// Ambient Light
-const ambientLight = new THREE.AmbientLight('white', 1)
+// Ambient light
+const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+gui.add(ambientLight, 'intensity').min(0).max(3).step(0.001)
+scene.add(ambientLight)
 
-// scene.add(ambientLight)
-
-// const ambientLightFolder = gui.addFolder('Ambient Light')
-// ambientLightFolder.addColor(ambientLight, 'color')
-// ambientLightFolder
-// 	.add(ambientLight, 'intensity')
-// 	.min(0)
-// 	.max(Math.PI)
-// 	.step(0.001)
-
-// Directional Light
-const directionalLight = new THREE.DirectionalLight('turquoise', 1)
-directionalLight.position.set(1, 0.25, 0)
-
-// scene.add(directionalLight)
-
-// const directionalLightFolder = gui.addFolder('Directional Light')
-// directionalLightFolder.addColor(directionalLight, 'color')
-// directionalLightFolder
-// 	.add(directionalLight, 'intensity')
-// 	.min(0)
-// 	.max(Math.PI)
-// 	.step(0.001)
-
-// Hemisphere Light
-
-const hemisphereLight = new THREE.HemisphereLight('red', 'blue', 1)
-
-// scene.add(hemisphereLight)
-
-// const hemisphereLightFolder = gui.addFolder('Hemisphere Light')
-// hemisphereLightFolder.addColor(hemisphereLight, 'color')
-// hemisphereLightFolder.addColor(hemisphereLight, 'groundColor')
-// hemisphereLightFolder
-// 	.add(hemisphereLight, 'intensity')
-// 	.min(0)
-// 	.max(Math.PI)
-// 	.step(0.001)
-
-// Point Light
-const pointLight = new THREE.PointLight('yellow', 1.5)
-pointLight.position.set(1, -0.5, 1)
-
-scene.add(pointLight)
-
-const pointLightFolder = gui.addFolder('Point Light')
-pointLightFolder.addColor(pointLight, 'color')
-pointLightFolder.add(pointLight, 'intensity').min(0).max(Math.PI).step(0.001)
-pointLightFolder.add(pointLight.position, 'x').min(-4).max(4).step(0.001)
-pointLightFolder.add(pointLight.position, 'y').min(-3).max(3).step(0.001)
-pointLightFolder.add(pointLight.position, 'z').min(-4).max(4).step(0.001)
-pointLightFolder.add(pointLight, 'distance').min(0).max(10).step(0.001)
-pointLightFolder.add(pointLight, 'decay').min(0).max(10).step(0.001)
-
-// Rect Area Light
-const rectAreaLight = new THREE.RectAreaLight('blue', Math.PI, 2, 1)
-rectAreaLight.position.set(-1.5, 0, 1.5)
-const lookAtTarget = new THREE.Vector3()
-rectAreaLight.lookAt(lookAtTarget)
-
-scene.add(rectAreaLight)
-
-const rectAreaLightFolder = gui.addFolder('Rect Area Light')
-rectAreaLightFolder.addColor(rectAreaLight, 'color')
-rectAreaLightFolder
-	.add(rectAreaLight, 'intensity')
-	.min(0)
-	.max(Math.PI)
-	.step(0.001)
-rectAreaLightFolder.add(rectAreaLight, 'width').min(0).max(5).step(0.001)
-rectAreaLightFolder.add(rectAreaLight, 'height').min(0).max(5).step(0.001)
-rectAreaLightFolder
-	.add(rectAreaLight.position, 'x')
-	.min(-4)
-	.max(4)
-	.step(0.001)
-	.onChange(() => {
-		rectAreaLight.lookAt(lookAtTarget)
-	})
-rectAreaLightFolder
-	.add(rectAreaLight.position, 'y')
-	.min(-3)
-	.max(3)
-	.step(0.001)
-	.onChange(() => {
-		rectAreaLight.lookAt(lookAtTarget)
-	})
-rectAreaLightFolder
-	.add(rectAreaLight.position, 'z')
-	.min(-4)
-	.max(4)
-	.step(0.001)
-	.onChange(() => {
-		rectAreaLight.lookAt(lookAtTarget)
-	})
-
-// Spot Light
-const spotLight = new THREE.SpotLight(
-	'white',
-	Math.PI,
-	10,
-	Math.PI * 0.1,
-	0.25,
-	1
-)
-spotLight.position.set(0, 2, 3)
-
-scene.add(spotLight)
-
-spotLight.target.position.x = 1.5
-scene.add(spotLight.target)
-
-const spotLightFolder = gui.addFolder('Spot Light')
-spotLightFolder.addColor(spotLight, 'color')
-spotLightFolder.add(spotLight, 'intensity').min(0).max(Math.PI).step(0.001)
-spotLightFolder.add(spotLight, 'distance').min(0).max(15).step(0.001)
-spotLightFolder.add(spotLight, 'angle').min(0).max(Math.PI).step(0.001)
-spotLightFolder.add(spotLight, 'penumbra').min(0).max(Math.PI).step(0.001)
-spotLightFolder.add(spotLight, 'decay').min(0).max(Math.PI).step(0.001)
-
-spotLightFolder.add(spotLight.target.position, 'x').min(-4).max(4).step(0.001)
-spotLightFolder.add(spotLight.target.position, 'y').min(-3).max(3).step(0.001)
-spotLightFolder.add(spotLight.target.position, 'z').min(-4).max(4).step(0.001)
+// Directional light
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5)
+directionalLight.position.set(2, 2, - 1)
+gui.add(directionalLight, 'intensity').min(0).max(3).step(0.001)
+gui.add(directionalLight.position, 'x').min(- 5).max(5).step(0.001)
+gui.add(directionalLight.position, 'y').min(- 5).max(5).step(0.001)
+gui.add(directionalLight.position, 'z').min(- 5).max(5).step(0.001)
+scene.add(directionalLight)
 
 /**
- * Helpers
+ * Materials
  */
-// const hemisphereLightHelper = new THREE.HemisphereLightHelper(
-// 	hemisphereLight,
-// 	0.2
-// )
-// scene.add(hemisphereLightHelper)
-
-// const directionalLightHelper = new THREE.DirectionalLightHelper(
-// 	directionalLight,
-// 	0.2
-// )
-// scene.add(directionalLightHelper)
-
-const pointLightHelper = new THREE.PointLightHelper(pointLight, 0.2)
-scene.add(pointLightHelper)
-
-const rectAreaLightHelper = new RectAreaLightHelper(rectAreaLight)
-scene.add(rectAreaLightHelper)
-
-const spotLightHelper = new THREE.SpotLightHelper(spotLight)
-scene.add(spotLightHelper)
+const material = new THREE.MeshStandardMaterial()
+material.roughness = 0.7
+gui.add(material, 'metalness').min(0).max(1).step(0.001)
+gui.add(material, 'roughness').min(0).max(1).step(0.001)
 
 /**
  * Objects
  */
-// Material
-const material = new THREE.MeshStandardMaterial()
-material.roughness = 0.4
-
-// Objects
-const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 32), material)
-sphere.position.x = -1.5
-
-const cube = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.75, 0.75), material)
-
-const torus = new THREE.Mesh(
-	new THREE.TorusGeometry(0.3, 0.2, 32, 64),
-	material
+const sphere = new THREE.Mesh(
+    new THREE.SphereGeometry(0.5, 32, 32),
+    material
 )
-torus.position.x = 1.5
 
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(5, 5), material)
-plane.rotation.x = -Math.PI * 0.5
-plane.position.y = -0.65
+const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(5, 5),
+    material
+)
+plane.rotation.x = - Math.PI * 0.5
+plane.position.y = - 0.5
 
-scene.add(sphere, cube, torus, plane)
+scene.add(sphere, plane)
 
 /**
  * Sizes
  */
 const sizes = {
-	width: window.innerWidth,
-	height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight
 }
 
-window.addEventListener('resize', () => {
-	// Update sizes
-	sizes.width = window.innerWidth
-	sizes.height = window.innerHeight
+window.addEventListener('resize', () =>
+{
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
 
-	// Update camera
-	camera.aspect = sizes.width / sizes.height
-	camera.updateProjectionMatrix()
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
-	// Update renderer
-	renderer.setSize(sizes.width, sizes.height)
-	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 /**
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(
-	75,
-	sizes.width / sizes.height,
-	0.1,
-	100
-)
+const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.x = 1
 camera.position.y = 1
 camera.position.z = 2
@@ -239,7 +97,7 @@ controls.enableDamping = true
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-	canvas: canvas,
+    canvas: canvas
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -249,26 +107,18 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  */
 const clock = new THREE.Clock()
 
-const tick = () => {
-	const elapsedTime = clock.getElapsedTime()
+const tick = () =>
+{
+    const elapsedTime = clock.getElapsedTime()
 
-	// Update objects
-	sphere.rotation.y = 0.1 * elapsedTime
-	cube.rotation.y = 0.1 * elapsedTime
-	torus.rotation.y = 0.1 * elapsedTime
+    // Update controls
+    controls.update()
 
-	sphere.rotation.x = 0.15 * elapsedTime
-	cube.rotation.x = 0.15 * elapsedTime
-	torus.rotation.x = 0.15 * elapsedTime
+    // Render
+    renderer.render(scene, camera)
 
-	// Update controls
-	controls.update()
-
-	// Render
-	renderer.render(scene, camera)
-
-	// Call tick again on the next frame
-	window.requestAnimationFrame(tick)
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick)
 }
 
 tick()
