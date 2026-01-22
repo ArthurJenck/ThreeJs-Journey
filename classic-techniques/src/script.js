@@ -35,6 +35,14 @@ directionalLight.castShadow = true
 
 directionalLight.shadow.mapSize.width = 1024
 directionalLight.shadow.mapSize.height = 1024
+
+directionalLight.shadow.camera.top = 1
+directionalLight.shadow.camera.right = 1
+directionalLight.shadow.camera.bottom = -1
+directionalLight.shadow.camera.left = -1
+
+directionalLight.shadow.camera.near = 1
+directionalLight.shadow.camera.far = 6
 console.log(directionalLight.shadow.camera)
 
 const directionalLightCameraHelper = new THREE.CameraHelper(
