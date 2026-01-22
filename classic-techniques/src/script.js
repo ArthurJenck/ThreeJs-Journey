@@ -44,7 +44,7 @@ directionalLight.shadow.camera.left = -1
 directionalLight.shadow.camera.near = 1
 directionalLight.shadow.camera.far = 6
 
-directionalLight.shadow.radius = 10
+// directionalLight.shadow.radius = 10
 
 const directionalLightCameraHelper = new THREE.CameraHelper(
     directionalLight.shadow.camera,
@@ -125,6 +125,7 @@ renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 renderer.shadowMap.enabled = true
+renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
 /**
  * Animate
