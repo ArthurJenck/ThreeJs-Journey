@@ -71,6 +71,21 @@ roof.rotation.y = Math.PI / 4
 
 house.add(roof)
 
+// Door
+const doorMeasurements = {
+	width: 2.2,
+	height: 2.2,
+}
+const door = new THREE.Mesh(
+	new THREE.PlaneGeometry(doorMeasurements.width, doorMeasurements.height),
+	new THREE.MeshStandardMaterial()
+)
+
+door.position.y += houseMeasurements.height / 2 - 0.25
+door.position.z += houseMeasurements.depth / 2 + 0.01
+
+house.add(door)
+
 /**
  * Lights
  */
