@@ -51,6 +51,26 @@ walls.position.y += houseMeasurements.height / 2
 
 house.add(walls)
 
+// Roof
+const roofMeasurements = {
+	radius: 3.5,
+	height: 1.5,
+	radialSegments: 4,
+}
+const roof = new THREE.Mesh(
+	new THREE.ConeGeometry(
+		roofMeasurements.radius,
+		roofMeasurements.height,
+		roofMeasurements.radialSegments
+	),
+	new THREE.MeshStandardMaterial()
+)
+
+roof.position.y = houseMeasurements.height + roofMeasurements.height / 2
+roof.rotation.y = Math.PI / 4
+
+house.add(roof)
+
 /**
  * Lights
  */
