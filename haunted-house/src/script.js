@@ -86,6 +86,37 @@ door.position.z += houseMeasurements.depth / 2 + 0.01
 
 house.add(door)
 
+// Bushes
+const bushMeasurements = {
+	radius: 1,
+	widthSegments: 16,
+	heightSegments: 16,
+}
+const bushGeometry = new THREE.SphereGeometry(
+	bushMeasurements.radius,
+	bushMeasurements.widthSegments,
+	bushMeasurements.heightSegments
+)
+const bushMaterial = new THREE.MeshStandardMaterial()
+
+const bush1 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush1.scale.set(0.5, 0.5, 0.5)
+bush1.position.set(0.8, 0.2, 2.2)
+
+const bush2 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush2.scale.setScalar(0.25)
+bush2.position.set(1.4, 0.21, 2.1)
+
+const bush3 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush3.scale.setScalar(0.4)
+bush3.position.set(-0.8, 0.1, 2.2)
+
+const bush4 = new THREE.Mesh(bushGeometry, bushMaterial)
+bush4.scale.setScalar(0.15)
+bush4.position.set(-1, 0.05, 2.6)
+
+house.add(bush1, bush2, bush3, bush4)
+
 /**
  * Lights
  */
