@@ -19,14 +19,14 @@ const scene = new THREE.Scene()
  * House
  */
 const houseMeasurements = {
-	width: 4,
-	height: 2.5,
-	depth: 4,
+    width: 4,
+    height: 2.5,
+    depth: 4,
 }
 // Floor
 const floor = new THREE.Mesh(
-	new THREE.PlaneGeometry(20, 20),
-	new THREE.MeshStandardMaterial()
+    new THREE.PlaneGeometry(20, 20),
+    new THREE.MeshStandardMaterial()
 )
 
 floor.rotation.x = -Math.PI / 2
@@ -39,12 +39,12 @@ scene.add(house)
 
 // Walls
 const walls = new THREE.Mesh(
-	new THREE.BoxGeometry(
-		houseMeasurements.width,
-		houseMeasurements.height,
-		houseMeasurements.depth
-	),
-	new THREE.MeshStandardMaterial()
+    new THREE.BoxGeometry(
+        houseMeasurements.width,
+        houseMeasurements.height,
+        houseMeasurements.depth
+    ),
+    new THREE.MeshStandardMaterial()
 )
 
 walls.position.y += houseMeasurements.height / 2
@@ -53,17 +53,17 @@ house.add(walls)
 
 // Roof
 const roofMeasurements = {
-	radius: 3.5,
-	height: 1.5,
-	radialSegments: 4,
+    radius: 3.5,
+    height: 1.5,
+    radialSegments: 4,
 }
 const roof = new THREE.Mesh(
-	new THREE.ConeGeometry(
-		roofMeasurements.radius,
-		roofMeasurements.height,
-		roofMeasurements.radialSegments
-	),
-	new THREE.MeshStandardMaterial()
+    new THREE.ConeGeometry(
+        roofMeasurements.radius,
+        roofMeasurements.height,
+        roofMeasurements.radialSegments
+    ),
+    new THREE.MeshStandardMaterial()
 )
 
 roof.position.y = houseMeasurements.height + roofMeasurements.height / 2
@@ -73,12 +73,12 @@ house.add(roof)
 
 // Door
 const doorMeasurements = {
-	width: 2.2,
-	height: 2.2,
+    width: 2.2,
+    height: 2.2,
 }
 const door = new THREE.Mesh(
-	new THREE.PlaneGeometry(doorMeasurements.width, doorMeasurements.height),
-	new THREE.MeshStandardMaterial()
+    new THREE.PlaneGeometry(doorMeasurements.width, doorMeasurements.height),
+    new THREE.MeshStandardMaterial()
 )
 
 door.position.y += houseMeasurements.height / 2 - 0.25
@@ -88,14 +88,14 @@ house.add(door)
 
 // Bushes
 const bushMeasurements = {
-	radius: 1,
-	widthSegments: 16,
-	heightSegments: 16,
+    radius: 1,
+    widthSegments: 16,
+    heightSegments: 16,
 }
 const bushGeometry = new THREE.SphereGeometry(
-	bushMeasurements.radius,
-	bushMeasurements.widthSegments,
-	bushMeasurements.heightSegments
+    bushMeasurements.radius,
+    bushMeasurements.widthSegments,
+    bushMeasurements.heightSegments
 )
 const bushMaterial = new THREE.MeshStandardMaterial()
 
@@ -119,14 +119,14 @@ house.add(bush1, bush2, bush3, bush4)
 
 // Graves
 const graveMeasurements = {
-	width: 0.6,
-	height: 0.8,
-	depth: 0.2,
+    width: 0.6,
+    height: 0.8,
+    depth: 0.2,
 }
 const graveGeometry = new THREE.BoxGeometry(
-	graveMeasurements.width,
-	graveMeasurements.height,
-	graveMeasurements.depth
+    graveMeasurements.width,
+    graveMeasurements.height,
+    graveMeasurements.depth
 )
 const graveMaterial = new THREE.MeshStandardMaterial()
 
@@ -134,25 +134,25 @@ const graves = new THREE.Group()
 scene.add(graves)
 
 for (let i = 0; i < 30; i++) {
-	// Placement on graves layout
-	const angle = Math.random() * Math.PI * 2
-	const radius = 3 + Math.random() * 4
+    // Placement on graves layout
+    const angle = Math.random() * Math.PI * 2
+    const radius = 3 + Math.random() * 4
 
-	// Mesh
-	const grave = new THREE.Mesh(graveGeometry, graveMaterial)
+    // Mesh
+    const grave = new THREE.Mesh(graveGeometry, graveMaterial)
 
-	grave.position.x = Math.cos(angle) * radius
-	grave.position.z = Math.sin(angle) * radius
+    grave.position.x = Math.cos(angle) * radius
+    grave.position.z = Math.sin(angle) * radius
 
-	grave.position.y = Math.random() * (graveMeasurements.height / 2)
+    grave.position.y = Math.random() * (graveMeasurements.height / 2)
 
-	// grave.rotation.y = Math
-	grave.rotation.x = (Math.random() - 0.5) * 0.4
-	grave.rotation.z = (Math.random() - 0.5) * 0.4
-	grave.rotation.y = (Math.random() - 0.5) * 0.4
+    // grave.rotation.y = Math
+    grave.rotation.x = (Math.random() - 0.5) * 0.4
+    grave.rotation.z = (Math.random() - 0.5) * 0.4
+    grave.rotation.y = (Math.random() - 0.5) * 0.4
 
-	// Add to graves group
-	graves.add(grave)
+    // Add to graves group
+    graves.add(grave)
 }
 
 /**
@@ -171,22 +171,22 @@ scene.add(directionalLight)
  * Sizes
  */
 const sizes = {
-	width: window.innerWidth,
-	height: window.innerHeight,
+    width: window.innerWidth,
+    height: window.innerHeight,
 }
 
 window.addEventListener('resize', () => {
-	// Update sizes
-	sizes.width = window.innerWidth
-	sizes.height = window.innerHeight
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
 
-	// Update camera
-	camera.aspect = sizes.width / sizes.height
-	camera.updateProjectionMatrix()
+    // Update camera
+    camera.aspect = sizes.width / sizes.height
+    camera.updateProjectionMatrix()
 
-	// Update renderer
-	renderer.setSize(sizes.width, sizes.height)
-	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 })
 
 /**
@@ -194,10 +194,10 @@ window.addEventListener('resize', () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
-	75,
-	sizes.width / sizes.height,
-	0.1,
-	100
+    75,
+    sizes.width / sizes.height,
+    0.1,
+    100
 )
 camera.position.x = 4
 camera.position.y = 2
@@ -212,7 +212,7 @@ controls.enableDamping = true
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-	canvas: canvas,
+    canvas: canvas,
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -223,18 +223,18 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 const timer = new Timer()
 
 const tick = () => {
-	// Timer
-	timer.update()
-	const elapsedTime = timer.getElapsed()
+    // Timer
+    timer.update()
+    const elapsedTime = timer.getElapsed()
 
-	// Update controls
-	controls.update()
+    // Update controls
+    controls.update()
 
-	// Render
-	renderer.render(scene, camera)
+    // Render
+    renderer.render(scene, camera)
 
-	// Call tick again on the next frame
-	window.requestAnimationFrame(tick)
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick)
 }
 
 tick()
