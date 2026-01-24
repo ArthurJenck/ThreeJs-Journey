@@ -16,6 +16,46 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 /**
+ * Textures
+ */
+const textureLoader = new THREE.TextureLoader()
+
+// Floor
+const floorFolder = gui.addFolder('Floor')
+
+const floorAlphaTexture = textureLoader.load('./floor/alpha.jpg')
+
+const floorColorTexture = textureLoader.load(
+    './floor/coast_sand_rocks_02_1k/diff.jpg'
+)
+floorColorTexture.repeat.set(8, 8)
+floorColorTexture.wrapS = THREE.RepeatWrapping
+floorColorTexture.wrapT = THREE.RepeatWrapping
+
+floorColorTexture.colorSpace = THREE.SRGBColorSpace
+
+const floorARMTexture = textureLoader.load(
+    './floor/coast_sand_rocks_02_1k/arm.jpg'
+)
+floorARMTexture.repeat.set(8, 8)
+floorARMTexture.wrapS = THREE.RepeatWrapping
+floorARMTexture.wrapT = THREE.RepeatWrapping
+
+const floorNormalTexture = textureLoader.load(
+    './floor/coast_sand_rocks_02_1k/nor_gl.jpg'
+)
+floorNormalTexture.repeat.set(8, 8)
+floorNormalTexture.wrapS = THREE.RepeatWrapping
+floorNormalTexture.wrapT = THREE.RepeatWrapping
+
+const floorDisplacementTexture = textureLoader.load(
+    './floor/coast_sand_rocks_02_1k/disp.jpg'
+)
+floorDisplacementTexture.repeat.set(8, 8)
+floorDisplacementTexture.wrapS = THREE.RepeatWrapping
+floorDisplacementTexture.wrapT = THREE.RepeatWrapping
+
+/**
  * House
  */
 const houseMeasurements = {
@@ -25,9 +65,23 @@ const houseMeasurements = {
 }
 // Floor
 const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(20, 20),
-    new THREE.MeshStandardMaterial()
+    new THREE.PlaneGeometry(20, 20, 100, 100),
+    new THREE.MeshStandardMaterial({
+        transparent: true,
+        alphaMap: floorAlphaTexture,
+        map: floorColorTexture,
+        aoMap: floorARMTexture,
+        roughnessMap: floorARMTexture,
+        metalnessMap: floorARMTexture,
+        normalMap: floorNormalTexture,
+        displacementMap: floorDisplacementTexture,
+        displacementScale: 0.3,
+        displacementBias: -0.2,
+    })
 )
+
+floorFolder.add(floor.material, 'displacementScale').min(0).max(1).step(0.001)
+floorFolder.add(floor.material, 'displacementBias').min(-1).max(1).step(0.001)
 
 floor.rotation.x = -Math.PI / 2
 
