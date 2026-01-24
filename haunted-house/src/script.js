@@ -55,6 +55,20 @@ floorDisplacementTexture.repeat.set(8, 8)
 floorDisplacementTexture.wrapS = THREE.RepeatWrapping
 floorDisplacementTexture.wrapT = THREE.RepeatWrapping
 
+// Wall
+const wallColorTexture = textureLoader.load(
+    './wall/castle_brick_broken_06_1k/diff.jpg'
+)
+wallColorTexture.colorSpace = THREE.SRGBColorSpace
+
+const wallARMTexture = textureLoader.load(
+    './wall/castle_brick_broken_06_1k/arm.jpg'
+)
+
+const wallNormalTexture = textureLoader.load(
+    './wall/castle_brick_broken_06_1k/nor_gl.jpg'
+)
+
 /**
  * House
  */
@@ -98,7 +112,13 @@ const walls = new THREE.Mesh(
         houseMeasurements.height,
         houseMeasurements.depth
     ),
-    new THREE.MeshStandardMaterial()
+    new THREE.MeshStandardMaterial({
+        map: wallColorTexture,
+        aoMap: wallARMTexture,
+        metalnessMap: wallARMTexture,
+        roughnessMap: wallARMTexture,
+        normalMap: wallNormalTexture,
+    })
 )
 
 walls.position.y += houseMeasurements.height / 2
