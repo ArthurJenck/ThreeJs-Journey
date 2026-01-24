@@ -144,6 +144,19 @@ const graveNormalTexture = textureLoader.load(
 graveNormalTexture.repeat.set(0.3, 0.4)
 graveNormalTexture.wrapS = THREE.RepeatWrapping
 
+// Door
+const doorColorTexture = textureLoader.load('./door/color.jpg')
+doorColorTexture.colorSpace = THREE.SRGBColorSpace
+
+const doorAlphaTexture = textureLoader.load('./door/alpha.jpg')
+const doorAmbientOcclusioTexture = textureLoader.load(
+    './door/ambientOcclusion.jpg'
+)
+const doorHeightTexture = textureLoader.load('./door/height.jpg')
+const doorMetalnessTexture = textureLoader.load('./door/metalness.jpg')
+const doorNormalTexture = textureLoader.load('./door/normal.jpg')
+const doorRoughnessTexture = textureLoader.load('./door/roughness.jpg')
+
 /**
  * House
  */
@@ -232,8 +245,24 @@ const doorMeasurements = {
     height: 2.2,
 }
 const door = new THREE.Mesh(
-    new THREE.PlaneGeometry(doorMeasurements.width, doorMeasurements.height),
-    new THREE.MeshStandardMaterial()
+    new THREE.PlaneGeometry(
+        doorMeasurements.width,
+        doorMeasurements.height,
+        100,
+        100
+    ),
+    new THREE.MeshStandardMaterial({
+        map: doorColorTexture,
+        transparent: true,
+        alphaMap: doorAlphaTexture,
+        aoMap: doorAmbientOcclusioTexture,
+        displacementMap: doorHeightTexture,
+        displacementScale: 0.15,
+        displacementBias: -0.04,
+        metalnessMap: doorMetalnessTexture,
+        roughnessMap: doorRoughnessTexture,
+        normalMap: doorNormalTexture,
+    })
 )
 
 door.position.y += houseMeasurements.height / 2 - 0.25
