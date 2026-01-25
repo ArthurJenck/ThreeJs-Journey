@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "deploy": "vercel --prod"
+        "deploy": "vite build && vercel --prod"
     },
     "devDependencies": {
         "vercel": "^50.5.0",
