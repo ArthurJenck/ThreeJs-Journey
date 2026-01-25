@@ -7,7 +7,9 @@ import GUI from 'lil-gui'
  * Base
  */
 // Debug
-const gui = new GUI()
+const gui = new GUI({
+    closeFolders: true,
+})
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -25,44 +27,44 @@ const floorFolder = gui.addFolder('Floor')
 
 const floorAlphaTexture = textureLoader.load('./floor/alpha.jpg')
 
-// const floorColorTexture = textureLoader.load(
-//     './floor/coast_sand_rocks_02_1k/diff.jpg'
-// )
 const floorColorTexture = textureLoader.load(
-    './floor/aerial_rocks_02_1k/diff.jpg'
+    './floor/coast_sand_rocks_02_1k/diff.jpg'
 )
-floorColorTexture.repeat.set(8, 8)
-floorColorTexture.wrapS = THREE.RepeatWrapping
-floorColorTexture.wrapT = THREE.RepeatWrapping
+const floorARMTexture = textureLoader.load(
+    './floor/coast_sand_rocks_02_1k/arm.jpg'
+)
+const floorNormalTexture = textureLoader.load(
+    './floor/coast_sand_rocks_02_1k/nor_gl.jpg'
+)
+const floorDisplacementTexture = textureLoader.load(
+    './floor/coast_sand_rocks_02_1k/disp.jpg'
+)
+// const floorColorTexture = textureLoader.load(
+//     './floor/aerial_rocks_02_1k/diff.jpg'
+// )
+// const floorARMTexture = textureLoader.load('./floor/aerial_rocks_02_1k/arm.jpg')
+// const floorNormalTexture = textureLoader.load(
+//     './floor/aerial_rocks_02_1k/nor_gl.jpg'
+// )
+// const floorDisplacementTexture = textureLoader.load(
+//     './floor/aerial_rocks_02_1k/disp.jpg'
+// )
 
 floorColorTexture.colorSpace = THREE.SRGBColorSpace
 
-// const floorARMTexture = textureLoader.load(
-//     './floor/coast_sand_rocks_02_1k/arm.jpg'
-// )
-const floorARMTexture = textureLoader.load('./floor/aerial_rocks_02_1k/arm.jpg')
+floorColorTexture.repeat.set(8, 8)
 floorARMTexture.repeat.set(8, 8)
-floorARMTexture.wrapS = THREE.RepeatWrapping
-floorARMTexture.wrapT = THREE.RepeatWrapping
-
-// const floorNormalTexture = textureLoader.load(
-//     './floor/coast_sand_rocks_02_1k/nor_gl.jpg'
-// )
-const floorNormalTexture = textureLoader.load(
-    './floor/aerial_rocks_02_1k/nor_gl.jpg'
-)
 floorNormalTexture.repeat.set(8, 8)
-floorNormalTexture.wrapS = THREE.RepeatWrapping
-floorNormalTexture.wrapT = THREE.RepeatWrapping
-
-// const floorDisplacementTexture = textureLoader.load(
-//     './floor/coast_sand_rocks_02_1k/disp.jpg'
-// )
-const floorDisplacementTexture = textureLoader.load(
-    './floor/aerial_rocks_02_1k/disp.jpg'
-)
 floorDisplacementTexture.repeat.set(8, 8)
+
+floorColorTexture.wrapS = THREE.RepeatWrapping
+floorARMTexture.wrapS = THREE.RepeatWrapping
+floorNormalTexture.wrapS = THREE.RepeatWrapping
 floorDisplacementTexture.wrapS = THREE.RepeatWrapping
+
+floorColorTexture.wrapT = THREE.RepeatWrapping
+floorARMTexture.wrapT = THREE.RepeatWrapping
+floorNormalTexture.wrapT = THREE.RepeatWrapping
 floorDisplacementTexture.wrapT = THREE.RepeatWrapping
 
 // Wall
@@ -409,6 +411,38 @@ doorLightFolder.add(doorLight.position, 'y').min(-10).max(10).step(0.001)
 doorLightFolder.add(doorLight.position, 'z').min(-10).max(10).step(0.001)
 
 /**
+ * Ghosts
+ */
+const ghost1 = new THREE.PointLight('#8800ff', 6)
+const ghost2 = new THREE.PointLight('#ff0088', 6)
+const ghost3 = new THREE.PointLight('#ff0000', 6)
+
+scene.add(ghost1, ghost2, ghost3)
+
+const ghostParams = {
+    ghost1AngleFactor: 0.5,
+    ghost2AngleFactor: 0.38,
+    ghost3AngleFactor: 0.76,
+}
+
+const ghostsFolder = gui.addFolder('Ghosts')
+const ghost1Folder = ghostsFolder.addFolder('Ghost 1')
+const ghost2Folder = ghostsFolder.addFolder('Ghost 2')
+const ghost3Folder = ghostsFolder.addFolder('Ghost 3')
+
+ghost1Folder.addColor(ghost1, 'color')
+ghost1Folder.add(ghost1, 'intensity').min(0).max(15).step(0.001)
+ghost1Folder.add(ghostParams, 'ghost1AngleFactor').min(0).max(5).name('Speed')
+
+ghost2Folder.addColor(ghost2, 'color')
+ghost2Folder.add(ghost2, 'intensity').min(0).max(15).step(0.001)
+ghost2Folder.add(ghostParams, 'ghost2AngleFactor').min(0).max(5).name('Speed')
+
+ghost3Folder.addColor(ghost3, 'color')
+ghost3Folder.add(ghost3, 'intensity').min(0).max(15).step(0.001)
+ghost3Folder.add(ghostParams, 'ghost3AngleFactor').min(0).max(5).name('Speed')
+
+/**
  * Sizes
  */
 const sizes = {
@@ -467,6 +501,37 @@ const tick = () => {
     // Timer
     timer.update()
     const elapsedTime = timer.getElapsed()
+
+    // Ghosts animation
+    const ghost1Angle = elapsedTime * ghostParams.ghost1AngleFactor
+
+    ghost1.position.x = Math.cos(ghost1Angle) * 4
+    ghost1.position.z = Math.sin(ghost1Angle) * 4
+    ghost1.position.y =
+        Math.sin(ghost1Angle) *
+        Math.sin(ghost1Angle * 2.34) *
+        Math.sin(ghost1Angle * 3.45)
+
+    const ghost2Angle = -elapsedTime * ghostParams.ghost2AngleFactor
+
+    ghost2.position.x = Math.cos(ghost2Angle) * 5
+    ghost2.position.z = Math.sin(ghost2Angle) * 5
+    ghost2.position.y =
+        Math.sin(ghost2Angle) *
+        Math.sin(ghost2Angle * 2.34) *
+        Math.sin(ghost2Angle * 3.45)
+
+    const ghost3Angle =
+        -elapsedTime *
+        Math.sin(ghostParams.ghost3AngleFactor) *
+        Math.sin(ghostParams.ghost3AngleFactor * 50)
+
+    ghost3.position.x = Math.cos(ghost3Angle) * 7
+    ghost3.position.z = Math.sin(ghost3Angle) * 7
+    ghost3.position.y =
+        Math.sin(ghost3Angle) *
+        Math.sin(ghost3Angle * 2.34) *
+        Math.sin(ghost3Angle * 3.45)
 
     // Update controls
     controls.update()
