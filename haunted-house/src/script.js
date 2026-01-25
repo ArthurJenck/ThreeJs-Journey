@@ -12,6 +12,8 @@ const gui = new GUI({
     closeFolders: true,
 })
 
+gui.close()
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
