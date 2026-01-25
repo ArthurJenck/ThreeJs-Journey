@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { Sky } from 'three/addons/objects/Sky.js'
 import { Timer } from 'three/addons/misc/Timer.js'
 import GUI from 'lil-gui'
 
@@ -521,6 +522,8 @@ const directionalLightCameraHelper = new THREE.CameraHelper(
 )
 scene.add(directionalLightCameraHelper)
 
+directionalLightCameraHelper.visible = false
+
 directionalLight.shadow.mapSize.width = 256
 directionalLight.shadow.mapSize.height = 256
 directionalLight.shadow.camera.top = 8
@@ -541,6 +544,64 @@ ghost2.shadow.camera.far = 10
 ghost3.shadow.mapSize.width = 256
 ghost3.shadow.mapSize.height = 256
 ghost3.shadow.camera.far = 10
+
+/**
+ * Sky
+ */
+const sky = new Sky()
+sky.material.uniforms['turbidity'].value = 10
+sky.material.uniforms['rayleigh'].value = 3
+sky.material.uniforms['mieCoefficient'].value = 0.1
+sky.material.uniforms['mieDirectionalG'].value = 0.95
+sky.material.uniforms['sunPosition'].value.set(0.3, -0.038, -0.95)
+
+sky.scale.setScalar(100)
+
+scene.add(sky)
+
+const skyFolder = gui.addFolder('Sky')
+skyFolder
+    .add(sky.material.uniforms['turbidity'], 'value')
+    .min(0)
+    .max(50)
+    .step(0.001)
+    .name('Turbidity')
+skyFolder
+    .add(sky.material.uniforms['rayleigh'], 'value')
+    .min(0)
+    .max(50)
+    .step(0.001)
+    .name('Rayleigh')
+skyFolder
+    .add(sky.material.uniforms['mieCoefficient'], 'value')
+    .min(0)
+    .max(1)
+    .step(0.001)
+    .name('Mie coefficient')
+skyFolder
+    .add(sky.material.uniforms['mieDirectionalG'], 'value')
+    .min(0)
+    .max(10)
+    .step(0.001)
+    .name('Mie directional G')
+
+const sunPositionFolder = skyFolder.addFolder('Sun position')
+sunPositionFolder.open()
+sunPositionFolder
+    .add(sky.material.uniforms['sunPosition'].value, 'x')
+    .min(-20)
+    .max(20)
+    .step(0.001)
+sunPositionFolder
+    .add(sky.material.uniforms['sunPosition'].value, 'y')
+    .min(-0.1)
+    .max(0.1)
+    .step(0.0001)
+sunPositionFolder
+    .add(sky.material.uniforms['sunPosition'].value, 'z')
+    .min(-10)
+    .max(0)
+    .step(0.001)
 
 /**
  * Animate
