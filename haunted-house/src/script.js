@@ -359,14 +359,41 @@ for (let i = 0; i < 30; i++) {
 /**
  * Lights
  */
+const lightsFolder = gui.addFolder('Lights')
+
 // Ambient light
-const ambientLight = new THREE.AmbientLight('#ffffff', 0.5)
+const ambientLight = new THREE.AmbientLight('#86cdff', 0.275)
 scene.add(ambientLight)
 
+const ambientLightFolder = lightsFolder.addFolder('Ambient light')
+
+ambientLightFolder.addColor(ambientLight, 'color')
+ambientLightFolder.add(ambientLight, 'intensity').min(0).max(10)
+
 // Directional light
-const directionalLight = new THREE.DirectionalLight('#ffffff', 1.5)
+const directionalLight = new THREE.DirectionalLight('#86cdff', 1)
 directionalLight.position.set(3, 2, -8)
 scene.add(directionalLight)
+
+const directionalLightFolder = lightsFolder.addFolder('Directional Light')
+
+directionalLightFolder.addColor(directionalLight, 'color')
+directionalLightFolder.add(directionalLight, 'intensity').min(0).max(10)
+directionalLightFolder
+    .add(directionalLight.position, 'x')
+    .min(-10)
+    .max(10)
+    .step(0.001)
+directionalLightFolder
+    .add(directionalLight.position, 'y')
+    .min(-10)
+    .max(10)
+    .step(0.001)
+directionalLightFolder
+    .add(directionalLight.position, 'z')
+    .min(-10)
+    .max(10)
+    .step(0.001)
 
 /**
  * Sizes
