@@ -395,6 +395,19 @@ directionalLightFolder
     .max(10)
     .step(0.001)
 
+// Door light
+const doorLight = new THREE.PointLight('#ffac63', 1)
+doorLight.position.set(0, 2.2, 2.5)
+scene.add(doorLight)
+
+const doorLightFolder = lightsFolder.addFolder('Door light')
+
+doorLightFolder.addColor(doorLight, 'color')
+doorLightFolder.add(doorLight, 'intensity').min(0).max(5).step(0.001)
+doorLightFolder.add(doorLight.position, 'x').min(-10).max(10).step(0.001)
+doorLightFolder.add(doorLight.position, 'y').min(-10).max(10).step(0.001)
+doorLightFolder.add(doorLight.position, 'z').min(-10).max(10).step(0.001)
+
 /**
  * Sizes
  */
