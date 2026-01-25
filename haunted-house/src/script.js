@@ -604,6 +604,15 @@ sunPositionFolder
     .step(0.001)
 
 /**
+ * Fog
+ */
+// scene.fog = new THREE.Fog('#02343f', 1, 13)
+scene.fog = new THREE.FogExp2('#02343f', 0.1)
+
+const fogFolder = gui.addFolder('Fog')
+fogFolder.addColor(scene.fog, 'color')
+
+/**
  * Animate
  */
 const timer = new Timer()
