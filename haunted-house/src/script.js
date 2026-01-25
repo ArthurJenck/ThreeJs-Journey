@@ -492,6 +492,12 @@ controls.maxPolarAngle = Math.PI / 2 - 0.05
 controls.maxDistance = 20
 controls.minDistance = 4.5
 
+controls.addEventListener('change', () => {
+    if (controls.target.y < 0) {
+        controls.target.y = 0
+    }
+})
+
 /**
  * Renderer
  */
