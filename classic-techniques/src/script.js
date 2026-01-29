@@ -22,7 +22,18 @@ const textureLoader = new THREE.TextureLoader()
 /**
  * Particles
  */
-const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
+// const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
+const particlesGeometry = new THREE.BufferGeometry()
+const vertices = new Float32Array([
+    -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0,
+    -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0,
+])
+
+particlesGeometry.setAttribute(
+    'position',
+    new THREE.BufferAttribute(vertices, 3)
+)
+
 const particlesMaterial = new THREE.PointsMaterial({
     size: 0.02,
     sizeAttenuation: true,
