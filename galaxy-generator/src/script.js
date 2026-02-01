@@ -6,7 +6,9 @@ import GUI from 'lil-gui'
  * Base
  */
 // Debug
-const gui = new GUI()
+const gui = new GUI({
+    title: 'Galaxy generator',
+})
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -20,41 +22,73 @@ const scene = new THREE.Scene()
 const galaxyParameters = {
     count: 1000,
     size: 0.02,
+    expansionFactor: 10,
 }
 
+let geometry = null
+let material = null
+let points = null
+
 const generateGalaxy = () => {
+    /**
+     * Destroy old galaxy
+     */
+    if (points) {
+        geometry.dispose()
+        material.dispose()
+        scene.remove(points)
+    }
+
     const vertices = new Float32Array(galaxyParameters.count * 3)
 
     for (let i = 0; i < galaxyParameters.count; i++) {
         const i3 = i * 3
 
-        vertices[i3 + 0] = (Math.random() - 0.5) * 10
-        vertices[i3 + 1] = (Math.random() - 0.5) * 10
-        vertices[i3 + 2] = (Math.random() - 0.5) * 10
+        vertices[i3 + 0] =
+            (Math.random() - 0.5) * galaxyParameters.expansionFactor
+        vertices[i3 + 1] =
+            (Math.random() - 0.5) * galaxyParameters.expansionFactor
+        vertices[i3 + 2] =
+            (Math.random() - 0.5) * galaxyParameters.expansionFactor
     }
 
     /**
      * Geometry
      */
-    const geometry = new THREE.BufferGeometry()
+    geometry = new THREE.BufferGeometry()
     geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
 
     /**
      * Material
      */
-    const material = new THREE.PointsMaterial({
+    material = new THREE.PointsMaterial({
         size: galaxyParameters.size,
         sizeAttenuation: true,
         depthWrite: false,
         blending: THREE.AdditiveBlending,
     })
 
-    const points = new THREE.Points(geometry, material)
+    points = new THREE.Points(geometry, material)
 
     scene.add(points)
 }
 
 generateGalaxy()
+
+gui.add(galaxyParameters, 'count')
+    .min(100)
+    .max(1000000)
+    .step(100)
+    .onFinishChange(generateGalaxy)
+gui.add(galaxyParameters, 'size')
+    .min(0.001)
+    .max(0.1)
+    .step(0.001)
+    .onFinishChange(generateGalaxy)
+gui.add(galaxyParameters, 'expansionFactor')
+    .min(1)
+    .max(1000)
+    .onFinishChange(generateGalaxy)
 
 /**
  * Sizes
