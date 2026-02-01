@@ -28,11 +28,15 @@ const galaxyParameters = {
     branches: 3,
     spin: 1,
     randomnessPower: 3,
+    rotationSpeed: 0.1,
 }
 
 let geometry = null
 let material = null
 let points = null
+
+const galaxy = new THREE.Group()
+scene.add(galaxy)
 
 const generateGalaxy = () => {
     /**
@@ -41,7 +45,7 @@ const generateGalaxy = () => {
     if (points) {
         geometry.dispose()
         material.dispose()
-        scene.remove(points)
+        galaxy.remove(points)
     }
 
     /**
@@ -106,7 +110,7 @@ const generateGalaxy = () => {
 
     points = new THREE.Points(geometry, material)
 
-    scene.add(points)
+    galaxy.add(points)
 }
 
 generateGalaxy()
@@ -115,6 +119,7 @@ galaxyParameters.generate = generateGalaxy
 
 gui.addColor(galaxyParameters, 'innerColor').onFinishChange(generateGalaxy)
 gui.addColor(galaxyParameters, 'outerColor').onFinishChange(generateGalaxy)
+gui.add(galaxyParameters, 'rotationSpeed').min(0).max(5).step(0.001)
 
 const starsFolder = gui.addFolder('Stars')
 
@@ -223,6 +228,8 @@ const clock = new THREE.Clock()
 
 const tick = () => {
     const elapsedTime = clock.getElapsedTime()
+
+    galaxy.rotation.y = -elapsedTime * galaxyParameters.rotationSpeed
 
     // Update controls
     controls.update()
