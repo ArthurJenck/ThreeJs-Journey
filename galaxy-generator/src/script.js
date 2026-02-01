@@ -25,6 +25,7 @@ const galaxyParameters = {
     radius: 5,
     branches: 3,
     spin: 1,
+    randomness: 0.2,
 }
 
 let geometry = null
@@ -56,13 +57,17 @@ const generateGalaxy = () => {
             2 *
             (i % galaxyParameters.branches)
 
+        const randomX = (Math.random() - 0.5) * galaxyParameters.randomness
+        const randomY = (Math.random() - 0.5) * galaxyParameters.randomness
+        const randomZ = (Math.random() - 0.5) * galaxyParameters.randomness
+
+        vertices[i3 + 0] = Math.cos(branchAngle + spinAngle) * radius + randomX
+        vertices[i3 + 1] = 0 + randomY
+        vertices[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius + randomZ
+
         if (i < 20) {
             // console.log(branchAngle)
         }
-
-        vertices[i3 + 0] = Math.cos(branchAngle + spinAngle) * radius
-        vertices[i3 + 1] = 0
-        vertices[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius
     }
 
     /**
@@ -113,6 +118,11 @@ gui.add(galaxyParameters, 'branches')
 gui.add(galaxyParameters, 'spin')
     .min(-5)
     .max(5)
+    .step(0.001)
+    .onFinishChange(generateGalaxy)
+gui.add(galaxyParameters, 'randomness')
+    .min(0)
+    .max(2)
     .step(0.001)
     .onFinishChange(generateGalaxy)
 
