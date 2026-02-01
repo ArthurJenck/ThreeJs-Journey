@@ -15,13 +15,46 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 /**
- * Test cube
+ * Galaxy
  */
-const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial()
-)
-scene.add(cube)
+const galaxyParameters = {
+    count: 1000,
+    size: 0.02,
+}
+
+const generateGalaxy = () => {
+    const vertices = new Float32Array(galaxyParameters.count * 3)
+
+    for (let i = 0; i < galaxyParameters.count; i++) {
+        const i3 = i * 3
+
+        vertices[i3 + 0] = (Math.random() - 0.5) * 10
+        vertices[i3 + 1] = (Math.random() - 0.5) * 10
+        vertices[i3 + 2] = (Math.random() - 0.5) * 10
+    }
+
+    /**
+     * Geometry
+     */
+    const geometry = new THREE.BufferGeometry()
+    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
+
+    /**
+     * Material
+     */
+    const material = new THREE.PointsMaterial({
+        size: galaxyParameters.size,
+        sizeAttenuation: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+    })
+
+    const points = new THREE.Points(geometry, material)
+
+    scene.add(points)
+}
+
+generateGalaxy()
 
 /**
  * Sizes
