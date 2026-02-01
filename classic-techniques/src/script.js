@@ -1,13 +1,20 @@
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
+
+/**
+ * Debug
+ */
+const gui = new GUI()
+
+const parameters = {
+    materialColor: '#ffeded',
+}
+
+gui.addColor(parameters, 'materialColor')
 
 /**
  * Base
  */
-// Debug
-const gui = new GUI()
-
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -15,54 +22,13 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 /**
- * Textures
+ * Test cube
  */
-const textureLoader = new THREE.TextureLoader()
-const particleTexture = textureLoader.load('/textures/particles/2.png')
-
-/**
- * Particles
- */
-// const particlesGeometry = new THREE.SphereGeometry(1, 32, 32)
-const particlesGeometry = new THREE.BufferGeometry()
-const count = 20000
-
-const vertices = new Float32Array(count * 3)
-const colors = new Float32Array(count * 3)
-
-for (let i = 0; i < count * 3; i++) {
-    vertices[i] = (Math.random() - 0.5) * 10
-    colors[i] = Math.random()
-}
-
-particlesGeometry.setAttribute(
-    'position',
-    new THREE.BufferAttribute(vertices, 3)
+const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({ color: '#ff0000' })
 )
-particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
-
-const particlesMaterial = new THREE.PointsMaterial({
-    size: 0.1,
-    sizeAttenuation: true,
-    // color: 0xff0000,
-    transparent: true,
-    alphaMap: particleTexture,
-    // alphaTest: 0.001,
-    // depthTest: false,
-    depthWrite: false,
-    blending: THREE.AdditiveBlending,
-    vertexColors: true,
-})
-
-const particles = new THREE.Points(particlesGeometry, particlesMaterial)
-
-scene.add(particles)
-
-// const cube = new THREE.Mesh(
-//     new THREE.BoxGeometry(),
-//     new THREE.MeshBasicMaterial()
-// )
-// scene.add(cube)
+scene.add(cube)
 
 /**
  * Sizes
@@ -91,17 +57,13 @@ window.addEventListener('resize', () => {
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(
-    75,
+    35,
     sizes.width / sizes.height,
     0.1,
     100
 )
-camera.position.z = 3
+camera.position.z = 6
 scene.add(camera)
-
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
 
 /**
  * Renderer
@@ -119,23 +81,6 @@ const clock = new THREE.Clock()
 
 const tick = () => {
     const elapsedTime = clock.getElapsedTime()
-
-    // Update particles
-    // particles.position.y = -elapsedTime * 0.1
-    for (let i = 0; i < count; i++) {
-        const i3 = i * 3
-
-        const x = particlesGeometry.attributes.position.array[i3 + 0]
-
-        particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(
-            elapsedTime + x
-        )
-
-        particlesGeometry.attributes.position.needsUpdate = true
-    }
-
-    // Update controls
-    controls.update()
 
     // Render
     renderer.render(scene, camera)
