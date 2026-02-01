@@ -22,7 +22,9 @@ const scene = new THREE.Scene()
 const galaxyParameters = {
     count: 1000,
     size: 0.02,
-    expansionFactor: 10,
+    radius: 5,
+    branches: 3,
+    spin: 1,
 }
 
 let geometry = null
@@ -39,17 +41,28 @@ const generateGalaxy = () => {
         scene.remove(points)
     }
 
+    /**
+     * New vertices
+     */
     const vertices = new Float32Array(galaxyParameters.count * 3)
 
     for (let i = 0; i < galaxyParameters.count; i++) {
         const i3 = i * 3
 
-        vertices[i3 + 0] =
-            (Math.random() - 0.5) * galaxyParameters.expansionFactor
-        vertices[i3 + 1] =
-            (Math.random() - 0.5) * galaxyParameters.expansionFactor
-        vertices[i3 + 2] =
-            (Math.random() - 0.5) * galaxyParameters.expansionFactor
+        const radius = Math.random() * galaxyParameters.radius
+        const spinAngle = radius * galaxyParameters.spin
+        const branchAngle =
+            (Math.PI / galaxyParameters.branches) *
+            2 *
+            (i % galaxyParameters.branches)
+
+        if (i < 20) {
+            // console.log(branchAngle)
+        }
+
+        vertices[i3 + 0] = Math.cos(branchAngle + spinAngle) * radius
+        vertices[i3 + 1] = 0
+        vertices[i3 + 2] = Math.sin(branchAngle + spinAngle) * radius
     }
 
     /**
@@ -75,6 +88,8 @@ const generateGalaxy = () => {
 
 generateGalaxy()
 
+galaxyParameters.generate = generateGalaxy
+
 gui.add(galaxyParameters, 'count')
     .min(100)
     .max(1000000)
@@ -85,10 +100,23 @@ gui.add(galaxyParameters, 'size')
     .max(0.1)
     .step(0.001)
     .onFinishChange(generateGalaxy)
-gui.add(galaxyParameters, 'expansionFactor')
-    .min(1)
-    .max(1000)
+gui.add(galaxyParameters, 'radius')
+    .min(0.01)
+    .max(20)
+    .step(0.01)
     .onFinishChange(generateGalaxy)
+gui.add(galaxyParameters, 'branches')
+    .min(2)
+    .max(20)
+    .step(1)
+    .onFinishChange(generateGalaxy)
+gui.add(galaxyParameters, 'spin')
+    .min(-5)
+    .max(5)
+    .step(0.001)
+    .onFinishChange(generateGalaxy)
+
+gui.add(galaxyParameters, 'generate').name('Re-generate')
 
 /**
  * Sizes
