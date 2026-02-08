@@ -9,19 +9,19 @@ import * as CANNON from 'cannon'
 const gui = new GUI()
 const debugObject = {}
 debugObject.createSphere = () => {
-    createSphere(Math.random() * 0.5, {
-        x: (Math.random() - 0.5) * 5,
+    createSphere(Math.random() * 0.5 + 0.1, {
+        x: (Math.random() - 0.5) * 3,
         y: 3,
-        z: (Math.random() - 0.5) * 5,
+        z: (Math.random() - 0.5) * 3,
     })
 }
 gui.add(debugObject, 'createSphere')
 
 debugObject.createBox = () => {
-    createBox(Math.random(), Math.random(), Math.random(), {
-        x: (Math.random() - 0.5) * 5,
+    createBox(Math.random() + 0.1, Math.random() + 0.1, Math.random() + 0.1, {
+        x: (Math.random() - 0.5) * 3,
         y: 3,
-        z: (Math.random() - 0.5) * 5,
+        z: (Math.random() - 0.5) * 3,
     })
 }
 gui.add(debugObject, 'createBox')
@@ -55,6 +55,8 @@ const environmentMapTexture = cubeTextureLoader.load([
  */
 // World
 const world = new CANNON.World()
+world.broadphase = new CANNON.SAPBroadphase(world)
+world.allowSleep = true
 world.gravity.set(0, -9.82, 0)
 
 // Materials
