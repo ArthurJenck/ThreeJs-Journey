@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
+import * as CANNON from 'cannon'
 
 /**
  * Debug
@@ -28,8 +29,52 @@ const environmentMapTexture = cubeTextureLoader.load([
     '/textures/environmentMaps/0/py.png',
     '/textures/environmentMaps/0/ny.png',
     '/textures/environmentMaps/0/pz.png',
-    '/textures/environmentMaps/0/nz.png'
+    '/textures/environmentMaps/0/nz.png',
 ])
+
+/**
+ * Physics
+ */
+// World
+const world = new CANNON.World()
+world.gravity.set(0, -9.82, 0)
+
+// Materials
+const concreteMaterial = new CANNON.Material('concrete')
+const plasticMaterial = new CANNON.Material('plastic')
+
+const concretePlasticContactMaterial = new CANNON.ContactMaterial(
+    concreteMaterial,
+    plasticMaterial,
+    {
+        friction: 0.1,
+        restitution: 0.7,
+    }
+)
+
+world.addContactMaterial(concretePlasticContactMaterial)
+
+// Sphere
+const sphereShape = new CANNON.Sphere(0.5)
+const sphereBody = new CANNON.Body({
+    mass: 1,
+    position: new CANNON.Vec3(0, 3, 0),
+    shape: sphereShape,
+    material: plasticMaterial,
+})
+
+world.addBody(sphereBody)
+
+// Floor
+const floorShape = new CANNON.Plane()
+const floorBody = new CANNON.Body()
+floorBody.mass = 0
+floorBody.addShape(floorShape)
+floorBody.material = concreteMaterial
+
+floorBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI / 2)
+
+world.addBody(floorBody)
 
 /**
  * Test sphere
@@ -40,7 +85,7 @@ const sphere = new THREE.Mesh(
         metalness: 0.3,
         roughness: 0.4,
         envMap: environmentMapTexture,
-        envMapIntensity: 0.5
+        envMapIntensity: 0.5,
     })
 )
 sphere.castShadow = true
@@ -57,11 +102,11 @@ const floor = new THREE.Mesh(
         metalness: 0.3,
         roughness: 0.4,
         envMap: environmentMapTexture,
-        envMapIntensity: 0.5
+        envMapIntensity: 0.5,
     })
 )
 floor.receiveShadow = true
-floor.rotation.x = - Math.PI * 0.5
+floor.rotation.x = -Math.PI * 0.5
 scene.add(floor)
 
 /**
@@ -74,10 +119,10 @@ const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6)
 directionalLight.castShadow = true
 directionalLight.shadow.mapSize.set(1024, 1024)
 directionalLight.shadow.camera.far = 15
-directionalLight.shadow.camera.left = - 7
+directionalLight.shadow.camera.left = -7
 directionalLight.shadow.camera.top = 7
 directionalLight.shadow.camera.right = 7
-directionalLight.shadow.camera.bottom = - 7
+directionalLight.shadow.camera.bottom = -7
 directionalLight.position.set(5, 5, 5)
 scene.add(directionalLight)
 
@@ -86,11 +131,10 @@ scene.add(directionalLight)
  */
 const sizes = {
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
 }
 
-window.addEventListener('resize', () =>
-{
+window.addEventListener('resize', () => {
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
@@ -108,8 +152,13 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.set(- 3, 3, 3)
+const camera = new THREE.PerspectiveCamera(
+    75,
+    sizes.width / sizes.height,
+    0.1,
+    100
+)
+camera.position.set(-3, 3, 3)
 scene.add(camera)
 
 // Controls
@@ -120,7 +169,7 @@ controls.enableDamping = true
  * Renderer
  */
 const renderer = new THREE.WebGLRenderer({
-    canvas: canvas
+    canvas: canvas,
 })
 renderer.shadowMap.enabled = true
 renderer.shadowMap.type = THREE.PCFSoftShadowMap
@@ -131,10 +180,17 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  * Animate
  */
 const clock = new THREE.Clock()
+let oldElapsedTime = 0
 
-const tick = () =>
-{
+const tick = () => {
     const elapsedTime = clock.getElapsedTime()
+    const deltaTime = elapsedTime - oldElapsedTime
+    oldElapsedTime = elapsedTime
+
+    // Update physics world
+    world.step(1 / 60, deltaTime, 3)
+
+    sphere.position.copy(sphereBody.position)
 
     // Update controls
     controls.update()
