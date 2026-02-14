@@ -1,8 +1,8 @@
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import GUI from 'lil-gui'
-
+import * as THREE from 'three'
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 /**
  * Base
  */
@@ -18,11 +18,15 @@ const scene = new THREE.Scene()
 /**
  * Models
  */
+// Load DRACO before GltfLoader
+const dracoLoader = new DRACOLoader()
+dracoLoader.setDecoderPath('/draco/')
+
 const gltfLoader = new GLTFLoader()
+gltfLoader.setDRACOLoader(dracoLoader)
 
-gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
-    console.log(gltf.scene)
-
+gltfLoader.load('/models/Duck/glTF-Draco/Duck.gltf', (gltf) => {
+    console.log(gltf)
     scene.add(gltf.scene)
 })
 
