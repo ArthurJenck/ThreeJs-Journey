@@ -20,8 +20,9 @@ const scene = new THREE.Scene()
  */
 const gltfLoader = new GLTFLoader()
 
-gltfLoader.load('/models/Duck/glTF/Duck.gltf', (gltf) => {
+gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
     console.log(gltf.scene)
+
     scene.add(gltf.scene)
 })
 
