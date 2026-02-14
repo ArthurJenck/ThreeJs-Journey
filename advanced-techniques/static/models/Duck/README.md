@@ -1,5 +1,4 @@
 # Duck
-
 ## Screenshot
 
 ![screenshot](screenshot/screenshot.png)
