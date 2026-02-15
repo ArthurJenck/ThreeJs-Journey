@@ -37,6 +37,27 @@ object3.position.x = 2
 scene.add(object1, object2, object3)
 
 /**
+ * Raycaster
+ */
+const raycaster = new THREE.Raycaster()
+
+const rayOrigin = new THREE.Vector3(-3, 0, 0)
+const rayDirection = new THREE.Vector3(10, 0, 0)
+rayDirection.normalize()
+
+raycaster.set(rayOrigin, rayDirection)
+
+object1.updateMatrixWorld()
+object2.updateMatrixWorld()
+object3.updateMatrixWorld()
+
+const intersect = raycaster.intersectObject(object2)
+console.log(intersect)
+
+const intersects = raycaster.intersectObjects([object1, object2, object3])
+console.log(intersects)
+
+/**
  * Sizes
  */
 const sizes = {
