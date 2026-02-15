@@ -44,18 +44,15 @@ const raycaster = new THREE.Raycaster()
 const rayOrigin = new THREE.Vector3(-3, 0, 0)
 const rayDirection = new THREE.Vector3(10, 0, 0)
 rayDirection.normalize()
-
 raycaster.set(rayOrigin, rayDirection)
 
-object1.updateMatrixWorld()
-object2.updateMatrixWorld()
-object3.updateMatrixWorld()
+const raycasterArrowHelper = new THREE.ArrowHelper(
+    raycaster.ray.direction,
+    raycaster.ray.origin,
+    10
+)
 
-const intersect = raycaster.intersectObject(object2)
-console.log(intersect)
-
-const intersects = raycaster.intersectObjects([object1, object2, object3])
-console.log(intersects)
+scene.add(raycasterArrowHelper)
 
 /**
  * Sizes
@@ -112,6 +109,21 @@ const clock = new THREE.Clock()
 
 const tick = () => {
     const elapsedTime = clock.getElapsedTime()
+
+    object1.position.y = Math.sin(elapsedTime * 0.3) * 1.5
+    object2.position.y = Math.sin(elapsedTime * 0.8) * 1.5
+    object3.position.y = Math.sin(elapsedTime * 1.4) * 1.5
+
+    const objectsToTest = [object1, object2, object3]
+
+    const intersects = raycaster.intersectObjects(objectsToTest)
+    for (const object of objectsToTest) {
+        if (intersects.some((intersect) => intersect.object === object)) {
+            object.material.color = new THREE.Color(0x0000ff)
+        } else {
+            object.material.color = new THREE.Color(0xff0000)
+        }
+    }
 
     // Update controls
     controls.update()
