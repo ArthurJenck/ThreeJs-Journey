@@ -24,6 +24,23 @@ const scene = new THREE.Scene()
 /**
  * Environment map
  */
+scene.environmentIntensity = 4
+scene.backgroundBlurriness = 0
+scene.backgroundIntensity = 1
+
+gui.add(scene, 'environmentIntensity').min(0).max(10).step(0.001)
+gui.add(scene, 'backgroundBlurriness').min(0).max(1).step(0.001)
+gui.add(scene, 'backgroundIntensity').min(0).max(10).step(0.001)
+
+gui.add(scene.backgroundRotation, 'y')
+    .min(0)
+    .max(Math.PI * 2)
+    .step(0.001)
+    .name('background rotation y')
+    .onChange((yRotation) => {
+        scene.environmentRotation.y = yRotation
+    })
+
 const environmentMap = cubeTextureLoader.load(
     [
         '/environmentMaps/0/px.png',
@@ -34,6 +51,7 @@ const environmentMap = cubeTextureLoader.load(
         '/environmentMaps/0/nz.png',
     ],
     (map) => {
+        scene.environment = map
         scene.background = map
     }
 )
@@ -43,10 +61,17 @@ const environmentMap = cubeTextureLoader.load(
  */
 const torusKnot = new THREE.Mesh(
     new THREE.TorusKnotGeometry(1, 0.4, 100, 16),
-    new THREE.MeshBasicMaterial()
+    new THREE.MeshStandardMaterial({
+        roughness: 0.3,
+        metalness: 1,
+        color: 0xaaaaaa,
+    })
 )
 torusKnot.position.y = 4
 torusKnot.position.x = -4
+
+torusKnot.material.envMap = environmentMap
+
 scene.add(torusKnot)
 
 /**
@@ -54,7 +79,6 @@ scene.add(torusKnot)
  */
 gltfLoader.load('/models/FlightHelmet/glTF/FlightHelmet.gltf', (gltf) => {
     gltf.scene.scale.setScalar(10)
-
     scene.add(gltf.scene)
 })
 
