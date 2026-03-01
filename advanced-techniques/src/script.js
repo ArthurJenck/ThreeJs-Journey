@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { EXRLoader } from 'three/addons/loaders/EXRLoader.js'
+import { GroundedSkybox } from 'three/addons/objects/GroundedSkybox.js'
 
 /**
  * Loaders
@@ -61,17 +62,6 @@ gui.add(scene.backgroundRotation, 'y')
 //     }
 // )
 
-// HDR (RGBE) equirectangular
-// const environmentMap = rgbeLoader.load(
-//     '/environmentMaps/blender-2k.hdr',
-//     (envMap) => {
-//         envMap.mapping = THREE.EquirectangularReflectionMapping
-
-//         scene.environment = envMap
-//         // scene.background = envMap
-//     }
-// )
-
 // // HDR (EXR) equirectangular
 // const environmentMap = exrLoader.load(
 //     '/environmentMaps/nvidiaCanvas-4k.exr',
@@ -94,6 +84,23 @@ gui.add(scene.backgroundRotation, 'y')
 //         scene.environment = envMap
 //     }
 // )
+
+// Ground projected skybox
+const environmentMap = rgbeLoader.load(
+    '/environmentMaps/2/2k.hdr',
+    (envMap) => {
+        envMap.mapping = THREE.EquirectangularReflectionMapping
+
+        scene.environment = envMap
+        // scene.background = envMap
+
+        // Skybox
+        const skybox = new GroundedSkybox(envMap, 15, 70)
+        skybox.position.y = 15
+
+        scene.add(skybox)
+    }
+)
 
 /**
  * Torus Knot
