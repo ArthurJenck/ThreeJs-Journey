@@ -1,13 +1,15 @@
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import GUI from 'lil-gui'
+import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 /**
  * Loaders
  */
 const gltfLoader = new GLTFLoader()
 const cubeTextureLoader = new THREE.CubeTextureLoader()
+const rgbeLoader = new RGBELoader()
 
 /**
  * Base
@@ -24,7 +26,7 @@ const scene = new THREE.Scene()
 /**
  * Environment map
  */
-scene.environmentIntensity = 4
+scene.environmentIntensity = 1
 scene.backgroundBlurriness = 0
 scene.backgroundIntensity = 1
 
@@ -41,20 +43,28 @@ gui.add(scene.backgroundRotation, 'y')
         scene.environmentRotation.y = yRotation
     })
 
-const environmentMap = cubeTextureLoader.load(
-    [
-        '/environmentMaps/0/px.png',
-        '/environmentMaps/0/nx.png',
-        '/environmentMaps/0/py.png',
-        '/environmentMaps/0/ny.png',
-        '/environmentMaps/0/pz.png',
-        '/environmentMaps/0/nz.png',
-    ],
-    (map) => {
-        scene.environment = map
-        scene.background = map
-    }
-)
+// const environmentMap = cubeTextureLoader.load(
+//     [
+//         '/environmentMaps/0/px.png',
+//         '/environmentMaps/0/nx.png',
+//         '/environmentMaps/0/py.png',
+//         '/environmentMaps/0/ny.png',
+//         '/environmentMaps/0/pz.png',
+//         '/environmentMaps/0/nz.png',
+//     ],
+//     (map) => {
+//         scene.environment = map
+//         scene.background = map
+//     }
+// )
+
+// RGBE (HDR) equirectangular
+const environmentMap = rgbeLoader.load('/environmentMaps/0/2k.hdr', (map) => {
+    map.mapping = THREE.EquirectangularReflectionMapping
+
+    scene.environment = map
+    scene.background = map
+})
 
 /**
  * Torus Knot
