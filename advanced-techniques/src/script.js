@@ -7,6 +7,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
  * Loaders
  */
 const gltfLoader = new GLTFLoader()
+const cubeTextureLoader = new THREE.CubeTextureLoader()
 
 /**
  * Base
@@ -21,6 +22,23 @@ const canvas = document.querySelector('canvas.webgl')
 const scene = new THREE.Scene()
 
 /**
+ * Environment map
+ */
+const environmentMap = cubeTextureLoader.load(
+    [
+        '/environmentMaps/0/px.png',
+        '/environmentMaps/0/nx.png',
+        '/environmentMaps/0/py.png',
+        '/environmentMaps/0/ny.png',
+        '/environmentMaps/0/pz.png',
+        '/environmentMaps/0/nz.png',
+    ],
+    (map) => {
+        scene.background = map
+    }
+)
+
+/**
  * Torus Knot
  */
 const torusKnot = new THREE.Mesh(
@@ -28,6 +46,7 @@ const torusKnot = new THREE.Mesh(
     new THREE.MeshBasicMaterial()
 )
 torusKnot.position.y = 4
+torusKnot.position.x = -4
 scene.add(torusKnot)
 
 /**
