@@ -59,12 +59,15 @@ gui.add(scene.backgroundRotation, 'y')
 // )
 
 // RGBE (HDR) equirectangular
-const environmentMap = rgbeLoader.load('/environmentMaps/0/2k.hdr', (map) => {
-    map.mapping = THREE.EquirectangularReflectionMapping
+const environmentMap = rgbeLoader.load(
+    '/environmentMaps/blender-2k.hdr',
+    (envMap) => {
+        envMap.mapping = THREE.EquirectangularReflectionMapping
 
-    scene.environment = map
-    scene.background = map
-})
+        scene.environment = envMap
+        // scene.background = envMap
+    }
+)
 
 /**
  * Torus Knot
