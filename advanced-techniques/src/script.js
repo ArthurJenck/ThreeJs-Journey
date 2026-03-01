@@ -72,7 +72,7 @@ gui.add(scene.backgroundRotation, 'y')
 //     }
 // )
 
-// HDR (EXR) equirectangular
+// // HDR (EXR) equirectangular
 // const environmentMap = exrLoader.load(
 //     '/environmentMaps/nvidiaCanvas-4k.exr',
 //     (envMap) => {
@@ -83,16 +83,17 @@ gui.add(scene.backgroundRotation, 'y')
 //     }
 // )
 
-const environmentMap = textureLoader.load(
-    'environmentMaps/blockadesLabsSkybox/interior_views_cozy_wood_cabin_with_cauldron_and_p.jpg',
-    (envMap) => {
-        envMap.mapping = THREE.EquirectangularReflectionMapping
-        envMap.colorSpace = THREE.SRGBColorSpace
+// // LDR equirectangular
+// const environmentMap = textureLoader.load(
+//     'environmentMaps/blockadesLabsSkybox/interior_views_cozy_wood_cabin_with_cauldron_and_p.jpg',
+//     (envMap) => {
+//         envMap.mapping = THREE.EquirectangularReflectionMapping
+//         envMap.colorSpace = THREE.SRGBColorSpace
 
-        scene.background = envMap
-        scene.environment = envMap
-    }
-)
+//         scene.background = envMap
+//         scene.environment = envMap
+//     }
+// )
 
 /**
  * Torus Knot
