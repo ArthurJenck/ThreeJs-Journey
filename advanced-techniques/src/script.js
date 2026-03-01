@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { EXRLoader } from 'three/addons/loaders/EXRLoader.js'
 
 /**
  * Loaders
@@ -10,6 +11,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 const gltfLoader = new GLTFLoader()
 const cubeTextureLoader = new THREE.CubeTextureLoader()
 const rgbeLoader = new RGBELoader()
+const exrLoader = new EXRLoader()
+const textureLoader = new THREE.TextureLoader()
 
 /**
  * Base
@@ -58,14 +61,36 @@ gui.add(scene.backgroundRotation, 'y')
 //     }
 // )
 
-// RGBE (HDR) equirectangular
-const environmentMap = rgbeLoader.load(
-    '/environmentMaps/blender-2k.hdr',
+// HDR (RGBE) equirectangular
+// const environmentMap = rgbeLoader.load(
+//     '/environmentMaps/blender-2k.hdr',
+//     (envMap) => {
+//         envMap.mapping = THREE.EquirectangularReflectionMapping
+
+//         scene.environment = envMap
+//         // scene.background = envMap
+//     }
+// )
+
+// HDR (EXR) equirectangular
+// const environmentMap = exrLoader.load(
+//     '/environmentMaps/nvidiaCanvas-4k.exr',
+//     (envMap) => {
+//         envMap.mapping = THREE.EquirectangularReflectionMapping
+
+//         scene.background = envMap
+//         scene.environment = envMap
+//     }
+// )
+
+const environmentMap = textureLoader.load(
+    'environmentMaps/blockadesLabsSkybox/interior_views_cozy_wood_cabin_with_cauldron_and_p.jpg',
     (envMap) => {
         envMap.mapping = THREE.EquirectangularReflectionMapping
+        envMap.colorSpace = THREE.SRGBColorSpace
 
+        scene.background = envMap
         scene.environment = envMap
-        // scene.background = envMap
     }
 )
 
